@@ -1,10 +1,10 @@
 
-const MAP_WIDTH = 1800;
+const MAP_WIDTH = 1600;
 const WIDTH = document.body.offsetWidth;
 const HEIGHT = 900;
 const SHARED_CONFIFG = {
 
-  width: WIDTH,
+  width: MAP_WIDTH,
   height: HEIGHT,
   zoomFactor: 1.5
 }
