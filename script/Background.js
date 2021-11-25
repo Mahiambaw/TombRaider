@@ -66,7 +66,7 @@ class Background extends Phaser.Scene {
     //FALL
     this.anims.create({
       key: "fall",
-      frames: this.anims.generateFrameNumbers('dude', { start: 46, end: 48}),
+      frames: this.anims.generateFrameNumbers('dude', { start: 46, end: 48 }),
       frameRate: 10,
       repeat: 0
     })
@@ -221,7 +221,7 @@ class Background extends Phaser.Scene {
 
   }
 
-  }
+
 
 
 
@@ -236,7 +236,7 @@ class Background extends Phaser.Scene {
     const ctrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
     const isUpDown = Phaser.Input.Keyboard.JustDown(cursors.up)
 
-    this.player.on('animationcomplete', () => {animCheck = false});
+    this.player.on('animationcomplete', () => { animCheck = false });
 
     //----------------PLAY ANIMATIONS------------------
     //HOLDING LEFT
@@ -270,18 +270,18 @@ class Background extends Phaser.Scene {
       //SETS SPEED GOING DOWN
       this.player.setVelocityY(-600);
       this.jumpCount++
-      if(!animCheck)this.player.anims.play('jump', true);
+      if (!animCheck) this.player.anims.play('jump', true);
       console.log(this.jumpCount)
     }
 
     //FALLING FAST
-    if(this.player.body.velocity.y != 0 && cursors.down.isDown) {
+    if (this.player.body.velocity.y != 0 && cursors.down.isDown) {
       this.player.setVelocityY(600);
     }
 
     //FALLING
     if (this.player.body.velocity.y > 0 && this.jumpCount == 0) {
-      if(!animCheck)this.player.anims.play('fall', true);
+      if (!animCheck) this.player.anims.play('fall', true);
     }
 
     //RESET JUMPCOUNT ON TOUCHING THE FLOOR
@@ -294,7 +294,7 @@ class Background extends Phaser.Scene {
       this.player.anims.play('glide', true)
       animCheck = true;
     }
- 
+
 
     //ATTACK ANIMATION IF YOU PRESS DOWN ARROW
     if (space.isDown) {
@@ -306,7 +306,7 @@ class Background extends Phaser.Scene {
     }
 
     //ENABLE ATTACK WHEN SLASHING
-    if(this.player.anims.currentAnim.key == "slash") {
+    if (this.player.anims.currentAnim.key == "slash") {
       this.box.active = true;
     }
     //DISABLE ATTACKING WHEN NOT SLASHING
@@ -314,7 +314,7 @@ class Background extends Phaser.Scene {
       this.box.active = false;
     }
 
-    if(this.player.anims.currentAnim.key == "glide") {
+    if (this.player.anims.currentAnim.key == "glide") {
       this.player.setBodySize(20, 15);
       this.player.body.setOffset(18, 28);
     }
@@ -329,17 +329,17 @@ class Background extends Phaser.Scene {
       this.box.x = this.player.x + 20;
       this.box.y = this.player.y + 5;
       //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
-      if(this.player.anims.currentAnim.key != "glide")this.player.body.setOffset(18, 13);
+      if (this.player.anims.currentAnim.key != "glide") this.player.body.setOffset(18, 13);
     }
     //IF PLAYER IS TURNED TO THE LEFT
     if (this.player.flipX) {
       this.box.x = this.player.x - 20;
       this.box.y = this.player.y + 5;
       //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
-      if(this.player.anims.currentAnim.key != "glide")this.player.body.setOffset(30, 13);
+      if (this.player.anims.currentAnim.key != "glide") this.player.body.setOffset(30, 13);
     }
 
-    
+
 
     if (this.player.body.blocked.down) dbJump = 0;
     //console.log(player.y);
