@@ -214,13 +214,21 @@ class Background extends Phaser.Scene {
       //console.log(end.x, end.y, "end")
       console.log("player has won ")
     })
+
     this.player.anims.play('idle', true);
+
+
+
+  }
 
   }
 
 
 
   update() {
+
+
+
 
     const onFloor = this.player.body.onFloor(); // checks if the player has touched the platform collider 
     const cursors = this.input.keyboard.createCursorKeys();
