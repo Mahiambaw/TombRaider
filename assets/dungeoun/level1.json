@@ -49,18 +49,18 @@
                 }, 
                 {
                  "height":0,
-                 "id":36,
+                 "id":48,
                  "name":"endZone",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1428,
-                 "y":549
+                 "x":1504.72727272727,
+                 "y":489.151515151515
                 }],
-         "offsetx":-12,
-         "offsety":-29,
+         "offsetx":3.27272727272725,
+         "offsety":-2.48484848484844,
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -68,7 +68,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":38,
+ "nextobjectid":49,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
