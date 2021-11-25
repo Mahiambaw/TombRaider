@@ -56,11 +56,19 @@ class Background extends Phaser.Scene {
       frameRate: 20,
       repeat: 0
     });
+    //GLIDE
     this.anims.create({
       key: "glide",
       frames: this.anims.generateFrameNumbers('dude', { start: 85, end: 90 }),
       frameRate: 10,
-      repeat: -1
+      repeat: 0
+    });
+    //FALL
+    this.anims.create({
+      key: "fall",
+      frames: this.anims.generateFrameNumbers('dude', { start: 46, end: 48}),
+      frameRate: 10,
+      repeat: 0
     })
     //----------------------END---------------------
 
@@ -109,9 +117,11 @@ class Background extends Phaser.Scene {
     this.box = Phaser.GameObjects.Rectangle
 
 
-    // this.box = this.add.rectangle(null, null, 30, 30, 0xffffff);
-    // this.add.existing(this.box);
-    // //this.creatCamera()
+    this.box = this.add.rectangle(null, null, 30, 30, 0xffffff);
+    this.add.existing(this.box);
+    this.box.active = false;
+    this.box.alpha = 0.2;
+    //this.creatCamera()
     //this.input.keyboard.on('keydown-UP', pressCheck);
 
 
@@ -205,6 +215,11 @@ class Background extends Phaser.Scene {
       console.log("player has won ")
     })
 
+    this.player.anims.play('idle', true);
+
+
+
+  }
 
   }
 
@@ -214,87 +229,125 @@ class Background extends Phaser.Scene {
 
 
 
+
     const onFloor = this.player.body.onFloor(); // checks if the player has touched the platform collider 
     const cursors = this.input.keyboard.createCursorKeys();
     const space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     const ctrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
     const isUpDown = Phaser.Input.Keyboard.JustDown(cursors.up)
 
+    this.player.on('animationcomplete', () => {animCheck = false});
 
     //----------------PLAY ANIMATIONS------------------
     //HOLDING LEFT
     if (cursors.left.isDown) {
       //SET RUNNING SPEED TO 300 TO LEFT
       this.player.setVelocityX(-300);
-      //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
-      this.player.body.setOffset(30, 13);
       //IF WE ARE TOUCHING THE GROUND AND NOT ATTACKING DO "RUN" ANIMATION
       if (this.player.body.blocked.down && !animCheck) this.player.anims.play('run', true);
       //FLIP SPRITE TO THE LEFT
       this.player.flipX = true;
     }
+
+
     //HOLDING RIGHT, SEE ABOVE
     else if (cursors.right.isDown) {
       this.player.setVelocityX(300);
-      this.player.body.setOffset(18, 13);
       if (this.player.body.blocked.down && !animCheck) this.player.anims.play('run', true);
       this.player.flipX = false;
     }
+
+
     //IF WE ARE NOT DOING ANYTHING DO THE IDLE ANIMATION
     else {
       //SET IT SO CHARACTER STOPS
       this.player.setVelocityX(0);
       if (this.player.body.blocked.down && !animCheck) this.player.anims.play('idle', true);
     }
+
     //IF YOU PRESS DOWN
-    if (isUpDown && (onFloor || this.jumpCount < this.nextJumps)) {
+    if (isUpDown && (onFloor || this.jumpCount < this.nextJumps) && !animCheck) {
       //SETS SPEED GOING DOWN
       this.player.setVelocityY(-600);
       this.jumpCount++
+      if(!animCheck)this.player.anims.play('jump', true);
       console.log(this.jumpCount)
     }
+
+    //FALLING FAST
+    if(this.player.body.velocity.y != 0 && cursors.down.isDown) {
+      this.player.setVelocityY(600);
+    }
+
+    //FALLING
+    if (this.player.body.velocity.y > 0 && this.jumpCount == 0) {
+      if(!animCheck)this.player.anims.play('fall', true);
+    }
+
+    //RESET JUMPCOUNT ON TOUCHING THE FLOOR
     if (onFloor) {
       this.jumpCount = 0;
     }
-    if (ctrl.isDown) {
+
+    //GLIDING
+    if (ctrl.isDown && onFloor && this.player.body.velocity.x != 0) {
       this.player.anims.play('glide', true)
+      animCheck = true;
     }
+ 
+
     //ATTACK ANIMATION IF YOU PRESS DOWN ARROW
     if (space.isDown) {
       this.player.anims.play('slash', true);
       //MAKE HITBOX FOR WEAPON ACTIVE
-      this.box.active = true
+      //this.box.active = true
       //MAKE SURE THE ANIMATION GETS TO RUN
       animCheck = true;
-      this.player.on('animationcomplete', resetNr);
     }
 
+    //ENABLE ATTACK WHEN SLASHING
+    if(this.player.anims.currentAnim.key == "slash") {
+      this.box.active = true;
+    }
+    //DISABLE ATTACKING WHEN NOT SLASHING
+    else {
+      this.box.active = false;
+    }
+
+    if(this.player.anims.currentAnim.key == "glide") {
+      this.player.setBodySize(20, 15);
+      this.player.body.setOffset(18, 28);
+    }
+
+    else {
+      this.player.setBodySize(20, 30);
+      this.player.body.setOffset(18, 13);
+    }
+
+    //IF PLAYER IS TURNED TO THE RIGHT
     if (!this.player.flipX) {
       this.box.x = this.player.x + 20;
       this.box.y = this.player.y + 5;
+      //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
+      if(this.player.anims.currentAnim.key != "glide")this.player.body.setOffset(18, 13);
     }
-
+    //IF PLAYER IS TURNED TO THE LEFT
     if (this.player.flipX) {
       this.box.x = this.player.x - 20;
       this.box.y = this.player.y + 5;
+      //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
+      if(this.player.anims.currentAnim.key != "glide")this.player.body.setOffset(30, 13);
     }
 
+    
 
     if (this.player.body.blocked.down) dbJump = 0;
     //console.log(player.y);
   }
 
 }
-function pressCheck() {
-  //SETS SPEED GOING UP
-  if (dbJump < 2) {
-    this.player.setVelocityY(-600);
-    this.player.anims.play('jump', true);
-    dbJump++;
-  }
-}
 
-//  
+
 function render() {
   game.debug.inputInfo(32, 32);
 }
