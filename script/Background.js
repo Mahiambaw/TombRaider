@@ -19,6 +19,7 @@ class Background extends Phaser.Scene {
 
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.spritesheet('dude', '../assets/sprites/warrior.png', { frameWidth: 69, frameHeight: 44 });
+    this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 69, frameHeight: 44 });
   }
 
   create() {
@@ -26,9 +27,9 @@ class Background extends Phaser.Scene {
     const layers = this.creatLayer(map);
 
     const playerZone = this.getplayerZone(layers.playerZone)
-    console.log(playerZone.end)
 
     this.player = this.creatPlayer(playerZone);
+    this.enemy = this.creatEnemy()
 
     this.anims.create({
       key: 'idle',
@@ -64,9 +65,46 @@ class Background extends Phaser.Scene {
     //----------------------END---------------------
 
 
+    // enemy animation --------------------
+    this.anims.create({
+      key: 'enemy_idle',
+      frames: this.anims.generateFrameNumbers('enemy', { start: 60, end: 68 }),
+      frameRate: 8,
+      repeat: -1
 
-    this.physics.add.collider(this.player, layers.platforms)
+    })
+
+    this.anims.create({
+      key: 'enemy_run',
+      frames: this.anims.generateFrameNumbers('enemy', { start: 0, end: 8 }),
+      FrameRate: 8,
+      repeat: -1
+
+    })
+    this.anims.create({
+      key: 'enemy_Back',
+      frames: this.anims.generateFrameNumbers('enemy', { start: 39, end: 46 }),
+      FrameRate: 8,
+      repeat: -1
+
+    })
+    this.anims.create({
+      key: 'enemy_Front',
+      frames: this.anims.generateFrameNumbers('enemy', { start: 47, end: 54 }),
+      FrameRate: 8,
+      repeat: -1
+
+    })
+    //-------- end-----------------
+    //------- collaider for both enemy ------------
+    this.enemy.setImmovable(true);
+    this.enemy.setSize(this.player.width, this.player.height)
     this.endOfLevel(playerZone.end, this.player)
+    this.physics.add.collider(this.player, layers.platforms)
+    this.physics.add.collider(this.enemy, layers.platforms)
+    this.physics.add.collider(this.enemy, this.player)
+
+    //---------------------- end ---------------------
 
     this.box = Phaser.GameObjects.Rectangle
 
@@ -104,6 +142,7 @@ class Background extends Phaser.Scene {
 
     const playerZone = map.getObjectLayer('player_Zone').objects;
     platforms.setCollisionByExclusion(-1, true);
+
     return { background, platforms, playerZone }
 
 
@@ -113,7 +152,9 @@ class Background extends Phaser.Scene {
   creatPlayer({ start }) {
 
     let player = this.physics.add.sprite(start.x, start.y, 'dude');
-    console.log(start.x, start.y, "this is start")
+
+    //let player = this.physics.add.sprite(1410, 500, 'dude');
+    //console.log(start.x, start.y, "this is start")
     player.body.setGravityY(700);
     player.setCollideWorldBounds(true);
     player.setBodySize(20, 30);
@@ -122,9 +163,23 @@ class Background extends Phaser.Scene {
     return player;
 
   }
+  creatEnemy() {
 
+    let enemy = this.physics.add.sprite(900, 490, 'enemy');
+
+    //let player = this.physics.add.sprite(1410, 500, 'dude');
+    //console.log(start.x, start.y, "this is start")
+
+    enemy.body.setGravityY(700);
+    enemy.setCollideWorldBounds(true);
+
+    //enemy.body.setOffset(18, 13);
+
+    return enemy;
+
+  }
   cameraFollow(player) {
-    const { height, wdith, mapOffset, zoomFactor } = config;
+    const { height, wdith, zoomFactor } = config;
     //this.physics.world.setBounds(0, 0, wdith + mapOffset, height)
     this.cameras.main.setBounds(0, 0, wdith, height).setZoom(zoomFactor);
     this.cameras.main.startFollow(player);
@@ -139,21 +194,24 @@ class Background extends Phaser.Scene {
     }
   }
   endOfLevel(end, player) {
+
     //console.log(end.x, end.y, "end")
     const endLevel = this.physics.add.sprite(end.x, end.y,
-      'end').setSize(5, 200).setOrigin(0.5, 1)
-    console.log(end.x, end.y, "end1")
-    const overlap = this.physics.add.overlap(this.player, endLevel, () => {
-      overlap.active = false;
-      console.log(end.x, end.y, "end")
+      'end').setAlpha(0)
+    endLevel.body.allowGravity = false;
+    const endlap = this.physics.add.overlap(player, endLevel, () => {
+      endlap.active = false;
+      //console.log(end.x, end.y, "end")
       console.log("player has won ")
     })
+
+
   }
 
 
 
-
   update() {
+
 
 
     const onFloor = this.player.body.onFloor(); // checks if the player has touched the platform collider 
