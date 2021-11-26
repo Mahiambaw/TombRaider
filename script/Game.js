@@ -10,13 +10,15 @@ const SHARED_CONFIFG = {
 }
 var config = {
   type: Phaser.AUTO,
+  
 
 
   ...SHARED_CONFIFG,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 200 }
+      gravity: { y: 200 },
+      debug: true
 
     }
   },
