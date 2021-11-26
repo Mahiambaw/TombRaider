@@ -68,9 +68,8 @@ class Player extends Phaser.Scene {
       })
       //----------------------END---------------------
 
+      //ADD ATTACK BOX
       this.box = Phaser.GameObjects.Rectangle
-
-
       this.box = this.add.rectangle(null, null, 30, 30, 0xffffff);
       this.add.existing(this.box);
       this.box.active = false;
@@ -78,28 +77,38 @@ class Player extends Phaser.Scene {
       //this.creatCamera()
       //this.input.keyboard.on('keydown-UP', pressCheck);
   
-  
+      //SETTING DOUBLEJUMP
       this.jumpCount = 0;
       this.nextJumps = 1;
 
+      //ERRORHANDLING
       this.player.anims.play('idle', true);
       console.log("player create")
 
+      //CREATE COLLIDER BETWEEN PLAYER AND PLATFORMS
       this.physics.add.collider(this.player, layers.platforms);
+      //SETTING PLAYER POSITIONING TO SET POSITION FROM TILED
       this.player.x = playerZone.start.x;
       this.player.y = playerZone.start.y;
 
+      //CAMERA FOR THE PLAYER CLASS
       this.cameras.main.setBounds(0, 0, window.width, window.height);
       this.cameras.main.setZoom(2);
+      //MAKE CAMERA FOLLOW PLAYER
+      this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
     }
 
     update () {
-        const onFloor = this.player.body.onFloor(); // checks if the player has touched the platform collider 
+        //CHECKS IF THE PLAYER HAS TOUCHED THE PLATFORM COLLIDER
+        const onFloor = this.player.body.onFloor(); 
+        //LOAD KEYBINDS
         const cursors = this.input.keyboard.createCursorKeys();
         const space = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         const ctrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
+        //ONLY SINGLE PRESS NOT HOLD
         const isUpDown = Phaser.Input.Keyboard.JustDown(cursors.up)
     
+        //MAKING SLIDING AND SLASHING ANIMATIONS END
         this.player.on('animationcomplete', () => { animCheck = false });
     
         //----------------PLAY ANIMATIONS------------------
@@ -178,14 +187,16 @@ class Player extends Phaser.Scene {
           this.box.active = false;
         }
     
+        //GLIDING ANIMATION
         if (this.player.anims.currentAnim.key == "glide") {
           this.player.setBodySize(20, 15);
-          this.player.body.setOffset(18, 28);
+          if(!this.player.flipX)this.player.body.setOffset(18, 28);
+          else this.player.body.setOffset(30, 28);
         }
     
+        //SET SIZE BACK TO NORMAL AFTER SLIDE
         else {
           this.player.setBodySize(20, 30);
-          this.player.body.setOffset(18, 13);
         }
     
         //IF PLAYER IS TURNED TO THE RIGHT
@@ -203,13 +214,11 @@ class Player extends Phaser.Scene {
           if (this.player.anims.currentAnim.key != "glide") this.player.body.setOffset(30, 13);
         }
     
-    
-    
-        if (this.player.body.blocked.down) dbJump = 0;
-        //console.log(player.y);
+        //CHECK ORDER OF LOADING FUNCTIONS
         if(thingCheck == 0)console.log("player update");
         thingCheck = 1;
-        this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
+
+        
         
     }
 

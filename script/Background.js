@@ -1,3 +1,4 @@
+//CREATING VARIABLES SO THEY ARE ABLE TO BE CALLED IN ALL CLASSES
 let player;
 let layers;
 let testLet = 0;
@@ -17,7 +18,6 @@ class Background extends Phaser.Scene {
   preload() {
 
     this.load.image('tile', './assets/dungeoun/tileset.png')
-
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 69, frameHeight: 44 });
   }
@@ -29,9 +29,14 @@ class Background extends Phaser.Scene {
     playerZone = this.getplayerZone(layers.playerZone)
     this.enemy = this.creatEnemy()
 
-    this.load.script("playerscript", "Player.js");
+    //LOADING THE PLAYER CLASS
+    //CURRENT LOAD STRUCTURE IS:
+    //BACKGROUND PRELOAD -> PLAYER PRELOAD -> BACKGROUND CREATE -> BACKGROUND UPDATE -> PLAYER CREATE -> PLAYER UPDATE
+    //LOAD THE SCRIPT (NOT NECESSARY IT SEEMS)
+    //this.load.script("playerscript", "Player.js");
     this.player = this.scene.add('player', Player, true);
-    this.scene.launch("player", Player);
+    //LAUNCH THE SCENE (NOT NECESSARY IT SEEMS)
+    //this.scene.launch("player", Player);
 
     // enemy animation --------------------
     this.anims.create({
@@ -74,6 +79,8 @@ class Background extends Phaser.Scene {
 
     //---------------------- end ---------------------
 
+    //CREATE CAMERA IN THE BACKGROUND CLASS
+    //NEED ONE CAMERA IN EACH CLASS BECAUSE THE BACKGROUND AND PLAYER CLASSES ARE SEPERATE SCENES
     this.cameras.main.setBounds(0, 0, window.width, window.height);
     this.cameras.main.setZoom(2);
 
@@ -157,7 +164,8 @@ class Background extends Phaser.Scene {
     //this.physics.add.collider(this.player.player, layers.platforms)
     if(testLet == 0)console.log(this.player.player + "update")
         testLet = 1;
-        if(this.player.player)this.cameras.main.startFollow(this.player.player, true, 0.5, 0.5);
+    //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
+    if(this.player.player)this.cameras.main.startFollow(this.player.player, true, 0.5, 0.5);
   }
 
 
