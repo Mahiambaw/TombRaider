@@ -1,7 +1,7 @@
 
 const MAP_WIDTH = 1600;
 const WIDTH = document.body.offsetWidth;
-const HEIGHT = 900;
+const HEIGHT = 800;
 const SHARED_CONFIFG = {
 
   width: MAP_WIDTH,
