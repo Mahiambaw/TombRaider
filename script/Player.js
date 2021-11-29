@@ -92,6 +92,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     //MAKE CAMERA FOLLOW PLAYER
     this.scene.cameras.main.startFollow(this, true, 0.5, 0.5);
     //---------- scene ending---------------
+    this.depth = 99;
   }
 
 
@@ -155,7 +156,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     //FALLING
     if (this.body.velocity.y > 0 && this.jumpCount == 0) {
-      if (!animCheck) this.anims.play('e', true);
+      if (!animCheck) this.anims.play('fall', true);
     }
 
     //RESET JUMPCOUNT ON TOUCHING THE FLOOR

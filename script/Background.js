@@ -1,8 +1,10 @@
 //CREATING VARIABLES SO THEY ARE ABLE TO BE CALLED IN ALL CLASSES
 
 
-let player;
 
+let player;
+let mapName;
+let map;
 
 
 class Background extends Phaser.Scene {
@@ -25,19 +27,21 @@ class Background extends Phaser.Scene {
     this.load.image('tile', './assets/dungeoun/tileset.png')
     this.load.image('star', './assets/dungeoun/starts.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
+    this.load.tilemapTiledJSON('map2', './assets/level2/second.json')
     this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 69, frameHeight: 44 });
   }
 
   create() {
-    const map = this.creatMap();
-    const layers = this.creatLayer(map);
-    const playerZone = this.getplayerZone
+    mapName = "map"
+    map = this.creatMap(mapName);
+    let layers = this.creatLayer(map);
+    let playerZone = this.getplayerZone
       (layers.playerZone)
     // from playerZone  it gets x and y value of the object spesfied in the tile map 
-    const x = playerZone.start.x;
-    const y = playerZone.start.y;
+    let x = playerZone.start.x;
+    let y = playerZone.start.y;
     // gets the collectable object and display it 
-    const collecLayer = this.getCollectable(layers.collectLayer)
+    //const collecLayer = this.getCollectable(layers.collectLayer)
     player = new Player(this, x, y)
 
     this.physics.add.collider(player, layers.platforms)
@@ -110,13 +114,40 @@ class Background extends Phaser.Scene {
 
   // creat a map function 
 
-  creatMap() {
-    const map = this.make.tilemap({ key: 'map' });
+  creatMap(name) {
+    const map = this.make.tilemap({ key: name });
 
     map.addTilesetImage('tileset', 'tile');
     return map;
 
   }
+
+  destroyMap() {
+    this.physics.world.colliders.destroy();
+    map.destroy();
+
+  }
+
+  levelChange() {
+    this.scene.pause();
+    this.destroyMap();
+    mapName = "map2";
+    map = this.creatMap(mapName);
+    let layers = this.creatLayer(map);
+    let playerZone = this.getplayerZone
+      (layers.playerZone)
+    // from playerZone  it gets x and y value of the object spesfied in the tile map 
+    let x = playerZone.start.x;
+    let y = playerZone.start.y;
+    player.x = x;
+    player.y = y;
+    this.physics.world.setBounds(0, 0, 3200, 1600);
+    this.physics.add.collider(player, layers.platforms)
+    // gets the collectable object and display it 
+    //const collecLayer = this.getCollectable(layers.collectLayer)
+    this.scene.resume();
+  }
+
   // creat a  layer function 
   // gets the tilsets 
   // creats map for the background and the platfrom 
@@ -130,10 +161,10 @@ class Background extends Phaser.Scene {
     // gets the  objects from json 
     // give the partameter with the Tiled mapname 
     const playerZone = map.getObjectLayer('player_Zone').objects;
-    const collectLayer = map.getObjectLayer('collectable').objects;
+    //const collectLayer = map.getObjectLayer('collectable').objects;
     platforms.setCollisionByExclusion(-1, true);
 
-    return { background, platforms, playerZone, collectLayer }
+    return { background, platforms, playerZone }
   }
 
   // adds the collectable as a group of objects 
@@ -186,7 +217,7 @@ class Background extends Phaser.Scene {
 
       endLap.active = false;
 
-      this.scene.start("Level2");
+      this.levelChange();
 
       console.log("Hello")
     })
@@ -216,6 +247,10 @@ class Background extends Phaser.Scene {
     testLet = 1;
     //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
     if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
+
+    if(Phaser.Geom.Intersects.RectangleToRectangle(this.enemy.getBounds(), box.getBounds) && box.active) {
+      this.enemy.destroy();
+    }
   }
 
 

@@ -1,11 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"tmx"
-        }
-    },
  "height":50,
  "infinite":false,
  "layers":[
@@ -32,9 +25,43 @@
          "width":100,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":3,
+         "name":"player_Zone",
+         "objects":[
+                {
+                 "height":0,
+                 "id":1,
+                 "name":"startZone",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":128,
+                 "y":1518.66666666667
+                }, 
+                {
+                 "height":120,
+                 "id":2,
+                 "name":"endZone",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":202.666666666667,
+                 "x":2866.66666666667,
+                 "y":860
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":3,
- "nextobjectid":1,
+ "nextlayerid":4,
+ "nextobjectid":3,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
@@ -49,7 +76,7 @@
          "margin":0,
          "name":"tileset",
          "spacing":0,
-         "tilecount":1024,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }],
