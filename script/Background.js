@@ -13,7 +13,6 @@ class Background extends Phaser.Scene {
   constructor(config) {
     super({ key: "Background" })
 
-    //this.config = config;
 
 
   }
@@ -248,7 +247,7 @@ class Background extends Phaser.Scene {
     //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
     if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-    if(Phaser.Geom.Intersects.RectangleToRectangle(this.enemy.getBounds(), box.getBounds) && box.active) {
+    if(Phaser.Geom.Intersects.RectangleToRectangle(this.enemy.getBounds(), box.getBounds()) && box.active) {
       this.enemy.destroy();
     }
   }
