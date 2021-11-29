@@ -3,6 +3,7 @@ let player;
 let mapName;
 let map;
 let enemy;
+let menu;
 
 
 class Background extends Phaser.Scene {
@@ -25,6 +26,7 @@ class Background extends Phaser.Scene {
     this.load.image('star', './assets/dungeoun/starts.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/second.json')
+
   }
 
   create() {
@@ -42,6 +44,9 @@ class Background extends Phaser.Scene {
     //for each enemy object create:
     enemy = new Enemy(this, 700, 500);
     //with position from tiled8
+
+    this.menu = this.scene.add('menu', Menu, true)
+    console.log(clickStart)
 
     this.physics.add.collider(player, layers.platforms)
     this.physics.add.collider(enemy, layers.platforms)
@@ -206,6 +211,10 @@ class Background extends Phaser.Scene {
 
 
   update() {
+
+    if (clickStart)
+    { 
+
     //this.physics.add.collider(this.player.player, layers.platforms)
     if (testLet == 0) console.log(this.player + "update")
     testLet = 1;
@@ -253,6 +262,12 @@ class Background extends Phaser.Scene {
             }
         }
     // });
+  }
+  else { 
+      player.anims.play('idle', true);
+      enemy.anims.play('enemy_idle', true)
+      enemy.body.velocity.x = 0;
+    }
   }
 
 

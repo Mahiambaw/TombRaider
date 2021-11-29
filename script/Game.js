@@ -26,7 +26,7 @@ var config = {
     }
   },
   parent: Background,
-  scene: [Background, Level2]
+  scene: [Background]
 
 };
 
