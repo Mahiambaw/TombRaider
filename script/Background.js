@@ -25,7 +25,7 @@ class Background extends Phaser.Scene {
     this.load.image('tile', './assets/dungeoun/tileset.png')
     this.load.image('star', './assets/dungeoun/starts.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
-    this.load.tilemapTiledJSON('map2', './assets/level2/second.json')
+    this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
   }
 
   create() {
@@ -39,7 +39,7 @@ class Background extends Phaser.Scene {
     let y = playerZone.start.y;
     // gets the collectable object and display it 
     //const collecLayer = this.getCollectable(layers.collectLayer)
-    player = new Player(this, x, y);  
+    player = new Player(this, x, y);
     //for each enemy object create:
     enemy = new Enemy(this, 700, 500);
     //with position from tiled8
@@ -213,52 +213,56 @@ class Background extends Phaser.Scene {
     //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
     if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-    if(Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
+    if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
       enemy.setActive(false).setVisible(false);
     }
-    if(Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), player.getBounds()) && player.alpha == 1) {
-      player.hb.decrease(20);
-      player.alpha = 0.5;
-      damageCheck = true;
-      setTimeout(() => {player.alpha = 1; damageCheck = false}, 1000)
+    if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), player.getBounds()) && player.alpha == 1) {
+      if (player.hb !== 0) {
+        player.hb.decrease(10);
+        player.alpha = 0.5;
+        damageCheck = true;
+        setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
+      }
     }
-      // see if this and player within 400px of each other
-      if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
+    // see if this and player within 400px of each other
+    if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
 
-        // if player to left of this AND this moving to right (or not moving)
-        if (enemy.body.velocity.x >= 0){               
-            if (player.x < enemy.x ) {
-                // move this to left
-                enemy.body.velocity.x = -150;
-        }}
-        // if player to right of this AND this moving to left (or not moving)
-        else if (enemy.body.velocity.x <= 0) {   
-                if (player.x > enemy.x){
-                    // move this to right
-                    enemy.body.velocity.x = 150;
-        }}
-    }
-           
-    // thisGroup.forEachAlive(function (this) {
-        // if bottom positions equal (could be on same platform) AND player within 300px
-        if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {    
-            // if player to left of this AND this moving to right
-            if (player.x < enemy.x && enemy.body.velocity.x > 0) {
-                // move this to left            
-                enemy.body.velocity.x *= -1; // reverse direction
-                // or could set directly: this.body.velocity.x = -150;        
-                // could add other code - change this animation, make this fire weapon, etc.
-
-            }
-            // if player to right of this AND this moving to left
-            else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
-                // move this to right
-                enemy.body.velocity.x *= -1; // reverse direction
-                // or could set directly: this.body.velocity.x = 150;
-                // could add other code - change this animation, make this fire weapon, etc.
-
-            }
+      // if player to left of this AND this moving to right (or not moving)
+      if (enemy.body.velocity.x >= 0) {
+        if (player.x < enemy.x) {
+          // move this to left
+          enemy.body.velocity.x = -150;
         }
+      }
+      // if player to right of this AND this moving to left (or not moving)
+      else if (enemy.body.velocity.x <= 0) {
+        if (player.x > enemy.x) {
+          // move this to right
+          enemy.body.velocity.x = 150;
+        }
+      }
+    }
+
+    // thisGroup.forEachAlive(function (this) {
+    // if bottom positions equal (could be on same platform) AND player within 300px
+    if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
+      // if player to left of this AND this moving to right
+      if (player.x < enemy.x && enemy.body.velocity.x > 0) {
+        // move this to left            
+        enemy.body.velocity.x *= -1; // reverse direction
+        // or could set directly: this.body.velocity.x = -150;        
+        // could add other code - change this animation, make this fire weapon, etc.
+
+      }
+      // if player to right of this AND this moving to left
+      else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
+        // move this to right
+        enemy.body.velocity.x *= -1; // reverse direction
+        // or could set directly: this.body.velocity.x = 150;
+        // could add other code - change this animation, make this fire weapon, etc.
+
+      }
+    }
     // });
   }
 
