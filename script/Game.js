@@ -10,7 +10,10 @@ const SHARED_CONFIFG = {
 }
 var config = {
   type: Phaser.AUTO,
-  
+  scale: {
+    mode: Phaser.Scale.FIT,
+    // ...
+  },
 
 
   ...SHARED_CONFIFG,
@@ -22,7 +25,8 @@ var config = {
 
     }
   },
-  scene: [Background]
+  parent: Background,
+  scene: [Background, Level2]
 
 };
 
