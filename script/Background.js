@@ -38,8 +38,10 @@ class Background extends Phaser.Scene {
     let y = playerZone.start.y;
     // gets the collectable object and display it 
     //const collecLayer = this.getCollectable(layers.collectLayer)
-    player = new Player(this, x, y);
+    player = new Player(this, x, y);  
+    //for each enemy object create:
     enemy = new Enemy(this, 700, 500);
+    //with position from tiled8
 
     this.physics.add.collider(player, layers.platforms)
     this.physics.add.collider(enemy, layers.platforms)
