@@ -106,6 +106,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   update() {
     const isUpDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+    const isCtrlDown = Phaser.Input.Keyboard.JustDown(this.ctrl)
     //CHECKS IF THE PLAYER HAS TOUCHED THE PLATFORM COLLIDER
     const onFloor = this.body.onFloor();
     //LOAD KEYBINDS
@@ -166,7 +167,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     //GLIDING
-    if (this.ctrl.isDown && onFloor && this.body.velocity.x != 0) {
+    if (isCtrlDown && onFloor && this.body.velocity.x != 0 && this.anims.currentAnim.key != "glide") {
       this.anims.play('glide', true)
       animCheck = true;
     }
@@ -194,20 +195,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       // //GLIDING ANIMATION
       if (this.anims.currentAnim.key == "glide") {
         this.setBodySize(20, 15);
-        if (!this.flipX) this.player.body.setOffset(18, 28);
+        if (!this.flipX) this.body.setOffset(18, 28);
         else this.body.setOffset(30, 28);
+        this.alpha = 0.5;
       }
 
       //SET SIZE BACK TO NORMAL AFTER SLIDE
       else {
         this.setBodySize(20, 30);
+        if(!damageCheck)this.alpha = 1;
       }
 
       //IF PLAYER IS TURNED TO THE RIGHT
       if (!this.flipX) {
         box.x = this.x + 20;
         box.y = this.y + 5;
-        //     //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
+        //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
         if (this.anims.currentAnim.key != "glide") this.body.setOffset(18, 13);
       }
       //   //IF PLAYER IS TURNED TO THE LEFT

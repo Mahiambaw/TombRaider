@@ -45,18 +45,19 @@ class HealthBar {
       this.bar.fillRect(x + margin, y + margin, healthWidth - margin, height - margin)
     }
 
-    return this.bar.setScrollFactor(0, 0).setScale(scale);
+    return this.bar.setScrollFactor(0, 0).setScale(scale).setDepth(99);
   }
   // ---------------- end of draw-----------
 
   // decrease health
 
   decrease(amount) {
-    if (amount <= 0) {
+    this.value -= amount;
+    if (this.value == 0) {
       this.value = 0;
+      console.log("dead");
     }
     else {
-      this.value - amount;
       this.draw(this.x, this.y, this.scale)
     }
 

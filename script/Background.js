@@ -3,6 +3,7 @@ let player;
 let mapName;
 let map;
 let enemy;
+let damageCheck = false;
 
 
 class Background extends Phaser.Scene {
@@ -213,7 +214,13 @@ class Background extends Phaser.Scene {
     if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
     if(Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
-      enemy.alpha = 0;
+      enemy.setActive(false).setVisible(false);
+    }
+    if(Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), player.getBounds()) && player.alpha == 1) {
+      player.hb.decrease(20);
+      player.alpha = 0.5;
+      damageCheck = true;
+      setTimeout(() => {player.alpha = 1; damageCheck = false}, 1000)
     }
       // see if this and player within 400px of each other
       if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
