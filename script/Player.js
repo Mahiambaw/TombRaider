@@ -93,6 +93,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene.cameras.main.startFollow(this, true, 0.5, 0.5);
     //---------- scene ending---------------
     this.depth = 99;
+    box.depth = 99;
   }
 
 

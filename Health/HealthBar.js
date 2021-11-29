@@ -12,6 +12,7 @@ class HealthBar {
     this.y = y / scale;
     this.scale = scale;
     this.value = health;
+    this.depth = 100;
     this.size = {
       width: 50,
       height: 10
