@@ -1,4 +1,4 @@
-
+let allowControls = true;
 let animCheck = 0;
 let dbJump = 0;
 let thingCheck = 0;
@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
   init() {
+    console.log("player init")
     this.gravity = 700;
     this.jumpCount = 0;
     this.nextJumps = 1;
@@ -86,6 +87,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       frameRate: 10,
       repeat: 0
     })
+    //DEATH
+    this.scene.anims.create({
+      key: "death",
+      frames: this.anims.generateFrameNumbers('dude', { start: 26, end: 36}),
+      frameRate: 10,
+      repeat: 0
+    })
     // ------------------- end animation -----------------------------
     this.scene.cameras.main.setBounds(0, 0, window.width, window.height);
     this.scene.cameras.main.setZoom(2);
@@ -105,122 +113,120 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-    const isUpDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
-    const isCtrlDown = Phaser.Input.Keyboard.JustDown(this.ctrl)
-    //CHECKS IF THE PLAYER HAS TOUCHED THE PLATFORM COLLIDER
-    const onFloor = this.body.onFloor();
-    //LOAD KEYBINDS
-
-
-    //MAKING SLIDING AND SLASHING ANIMATIONS END
-    this.on('animationcomplete', () => { animCheck = false });
-
     //----------------PLAY ANIMATIONS------------------
-    //HOLDING LEFT
-    if (this.cursors.left.isDown) {
-      //SET RUNNING SPEED TO 300 TO LEFT
-      this.setVelocityX(-300);
-      //IF WE ARE TOUCHING THE GROUND AND NOT ATTACKING DO "RUN" ANIMATION
-      if (this.body.blocked.down && !animCheck) this.anims.play('run', true);
-      //FLIP SPRITE TO THE LEFT
-      this.flipX = true;
-    }
-
-
-    //HOLDING RIGHT, SEE ABOVE
-    else if (this.cursors.right.isDown) {
-      this.setVelocityX(300);
-      if (this.body.blocked.down && !animCheck) this.anims.play('run', true);
-      this.flipX = false;
-    }
-
-
-    //IF WE ARE NOT DOING ANYTHING DO THE IDLE ANIMATION
-    else {
-      //SET IT SO CHARACTER STOPS
-      this.setVelocityX(0);
-      if (this.body.blocked.down && !animCheck) this.anims.play('idle', true);
-    }
-
-    //IF YOU PRESS DOWN
-    if (isUpDown && (onFloor || this.jumpCount < this.nextJumps) && !animCheck) {
-      //SETS SPEED GOING DOWN
-      this.setVelocityY(-600);
-      this.jumpCount++
-      if (!animCheck) this.anims.play('jump', true);
-      console.log(this.jumpCount)
-    }
-
-    //FALLING FAST
-    if (this.body.velocity.y != 0 && this.cursors.down.isDown) {
-      this.setVelocityY(600);
-    }
-
-    //FALLING
-    if (this.body.velocity.y > 0 && this.jumpCount == 0) {
-      if (!animCheck) this.anims.play('fall', true);
-    }
-
-    //RESET JUMPCOUNT ON TOUCHING THE FLOOR
-    if (onFloor) {
-      this.jumpCount = 0;
-    }
-
-    //GLIDING
-    if (isCtrlDown && onFloor && this.body.velocity.x != 0 && this.anims.currentAnim.key != "glide") {
-      this.anims.play('glide', true)
-      animCheck = true;
-    }
-
-
-    // //ATTACK ANIMATION IF YOU PRESS DOWN ARROW
-    if (this.space.isDown) {
-      this.anims.play('slash', true);
-      //MAKE HITBOX FOR WEAPON ACTIVE
-      box.active = true
-      //MAKE SURE THE ANIMATION GETS TO RUN
-      animCheck = true;
-    }
-
-    //ENABLE ATTACK WHEN SLASHING
-    if (this.anims.currentAnim !== null) {
-      if (this.anims.currentAnim.key == "slash") {
-        box.active = true;
+    if(allowControls && this.body) {
+      const isUpDown = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+      const isCtrlDown = Phaser.Input.Keyboard.JustDown(this.ctrl)
+      //CHECKS IF THE PLAYER HAS TOUCHED THE PLATFORM COLLIDER
+      const onFloor = this.body.onFloor();
+      //LOAD KEYBINDS
+      //MAKING SLIDING AND SLASHING ANIMATIONS END
+      this.on('animationcomplete', () => { animCheck = false });
+      //HOLDING LEFT
+      if (this.cursors.left.isDown) {
+        //SET RUNNING SPEED TO 300 TO LEFT
+        this.setVelocityX(-300);
+        //IF WE ARE TOUCHING THE GROUND AND NOT ATTACKING DO "RUN" ANIMATION
+        if (this.body.blocked.down && !animCheck) this.anims.play('run', true);
+        //FLIP SPRITE TO THE LEFT
+        this.flipX = true;
       }
-      //DISABLE ATTACKING WHEN NOT SLASHING
+
+
+      //HOLDING RIGHT, SEE ABOVE
+      else if (this.cursors.right.isDown) {
+        this.setVelocityX(300);
+        if (this.body.blocked.down && !animCheck) this.anims.play('run', true);
+        this.flipX = false;
+      }
+
+
+      //IF WE ARE NOT DOING ANYTHING DO THE IDLE ANIMATION
       else {
-        box.active = false;
+        //SET IT SO CHARACTER STOPS
+        this.setVelocityX(0);
+        if (this.body.blocked.down && !animCheck) this.anims.play('idle', true);
       }
 
-      // //GLIDING ANIMATION
-      if (this.anims.currentAnim.key == "glide") {
-        this.setBodySize(20, 15);
-        if (!this.flipX) this.body.setOffset(18, 28);
-        else this.body.setOffset(30, 28);
-        this.alpha = 0.5;
+      //IF YOU PRESS DOWN
+      if (isUpDown && (onFloor || this.jumpCount < this.nextJumps) && !animCheck) {
+        //SETS SPEED GOING DOWN
+        this.setVelocityY(-600);
+        this.jumpCount++
+        if (!animCheck) this.anims.play('jump', true);
+        console.log(this.jumpCount)
       }
 
-      //SET SIZE BACK TO NORMAL AFTER SLIDE
-      else {
-        this.setBodySize(20, 30);
-        if(!damageCheck)this.alpha = 1;
+      //FALLING FAST
+      if (this.body.velocity.y != 0 && this.cursors.down.isDown) {
+        this.setVelocityY(600);
       }
 
-      //IF PLAYER IS TURNED TO THE RIGHT
-      if (!this.flipX) {
-        box.x = this.x + 20;
-        box.y = this.y + 5;
-        //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
-        if (this.anims.currentAnim.key != "glide") this.body.setOffset(18, 13);
-      }
-      //   //IF PLAYER IS TURNED TO THE LEFT
-      if (this.flipX) {
-        box.x = this.x - 20;
-        box.y = this.y + 5;
-        //     //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
-        if (this.anims.currentAnim.key != "glide") this.body.setOffset(30, 13);
+      //FALLING
+      if (this.body.velocity.y > 0 && this.jumpCount == 0) {
+        if (!animCheck) this.anims.play('fall', true);
       }
 
+      //RESET JUMPCOUNT ON TOUCHING THE FLOOR
+      if (onFloor) {
+        this.jumpCount = 0;
+      }
+
+      //GLIDING
+      if (isCtrlDown && onFloor && this.body.velocity.x != 0 && this.anims.currentAnim.key != "glide") {
+        this.anims.play('glide', true)
+        animCheck = true;
+      }
+
+
+      // //ATTACK ANIMATION IF YOU PRESS DOWN ARROW
+      if (this.space.isDown) {
+        this.anims.play('slash', true);
+        //MAKE HITBOX FOR WEAPON ACTIVE
+        box.active = true
+        //MAKE SURE THE ANIMATION GETS TO RUN
+        animCheck = true;
+      }
+
+      //ENABLE ATTACK WHEN SLASHING
+      if (this.anims.currentAnim !== null) {
+        if (this.anims.currentAnim.key == "slash") {
+          box.active = true;
+        }
+        //DISABLE ATTACKING WHEN NOT SLASHING
+        else {
+          box.active = false;
+        }
+
+        // //GLIDING ANIMATION
+        if (this.anims.currentAnim.key == "glide") {
+          this.setBodySize(20, 15);
+          if (!this.flipX) this.body.setOffset(18, 28);
+          else this.body.setOffset(30, 28);
+          this.alpha = 0.5;
+        }
+
+        //SET SIZE BACK TO NORMAL AFTER SLIDE
+        else {
+          this.setBodySize(20, 30);
+          if(!damageCheck)this.alpha = 1;
+        }
+
+        //IF PLAYER IS TURNED TO THE RIGHT
+        if (!this.flipX) {
+          box.x = this.x + 20;
+          box.y = this.y + 5;
+          //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
+          if (this.anims.currentAnim.key != "glide") this.body.setOffset(18, 13);
+        }
+        //   //IF PLAYER IS TURNED TO THE LEFT
+        if (this.flipX) {
+          box.x = this.x - 20;
+          box.y = this.y + 5;
+          //     //SET POSITION OF SPRITE HITBOX TO CENTER OF SPRITE
+          if (this.anims.currentAnim.key != "glide") this.body.setOffset(30, 13);
+        }
+      }
       //   //CHECK ORDER OF LOADING FUNCTIONS
       if (thingCheck == 0) console.log("player update");
       thingCheck = 1;
