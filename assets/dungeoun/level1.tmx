@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="77">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="98">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="../../../../Downloads/tileset.png" width="1024" height="1024"/>
  </tileset>
- <tileset firstgid="1025" name="asset" tilewidth="101" tileheight="109" tilecount="1" columns="0">
+ <tileset firstgid="1025" name="dimond" tilewidth="32" tileheight="32" tilecount="1" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
-   <image width="101" height="109" source="../../../../Downloads/asset.png"/>
+   <image width="23" height="24" source="dimond.png"/>
   </tile>
  </tileset>
  <layer id="1" name="Background" width="50" height="25">
@@ -28,15 +28,16 @@
   </object>
  </objectgroup>
  <objectgroup id="7" name="collectable">
-  <object id="64" gid="1025" x="294.641" y="295.342" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="66" gid="1025" x="345" y="294.309" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="68" gid="1025" x="405.333" y="293.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="69" gid="1025" x="464.333" y="292.976" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="70" gid="1025" x="1160" y="418.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="71" gid="1025" x="1209" y="418.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="72" gid="1025" x="1261" y="419.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="73" gid="1025" x="722" y="207.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="75" gid="1025" x="785" y="204.642" width="30.0004" height="34.7156" rotation="359.664"/>
-  <object id="76" gid="1025" x="656" y="207.642" width="30.0004" height="34.7156" rotation="359.664"/>
+  <object id="79" gid="1025" x="322" y="295" width="32" height="32"/>
+  <object id="84" gid="1025" x="367" y="294" width="32" height="32"/>
+  <object id="85" gid="1025" x="417" y="293" width="32" height="32"/>
+  <object id="86" gid="1025" x="459" y="295" width="32" height="32"/>
+  <object id="87" gid="1025" x="658" y="208" width="32" height="32"/>
+  <object id="88" gid="1025" x="726" y="208" width="32" height="32"/>
+  <object id="89" gid="1025" x="787" y="210" width="32" height="32"/>
+  <object id="90" gid="1025" x="851" y="208" width="32" height="32"/>
+  <object id="92" gid="1025" x="1165" y="431" width="32" height="32"/>
+  <object id="96" gid="1025" x="1206" y="430" width="32" height="32"/>
+  <object id="97" gid="1025" x="1252" y="431" width="32" height="32"/>
  </objectgroup>
 </map>

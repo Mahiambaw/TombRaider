@@ -23,7 +23,7 @@ class Background extends Phaser.Scene {
     this.load.spritesheet('dude', '../assets/sprites/warrior.png', { frameWidth: 69, frameHeight: 44 });
     this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 41.4, frameHeight: 41.4 });
     this.load.image('tile', './assets/dungeoun/tileset.png')
-    this.load.image('star', './assets/dungeoun/starts.png')
+    this.load.image('dimond', './assets/dungeoun/dimond.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
   }
@@ -38,7 +38,7 @@ class Background extends Phaser.Scene {
     let x = playerZone.start.x;
     let y = playerZone.start.y;
     // gets the collectable object and display it 
-    //const collecLayer = this.getCollectable(layers.collectLayer)
+    // const collecLayer = this.getCollectable(layers.collectLayer)
     player = new Player(this, x, y);
     //for each enemy object create:
     enemy = new Enemy(this, 700, 500);
@@ -62,7 +62,9 @@ class Background extends Phaser.Scene {
     //this.scene.launch("player", Player);
 
     // enemy animation --------------------
-    //const collectable = this.getCollectable(layers.collectLayer);
+    const collectable = this.getCollectable(layers.collectLayer);
+
+    this.physics.add.overlap(player, collectable, this.oncollect)
 
     this.endOfLevel(playerZone.end, player);
     //this.physics.add.collider(this.enemy, this.player)
@@ -76,6 +78,7 @@ class Background extends Phaser.Scene {
     this.cameras.main.setZoom(2);
 
   }
+
 
   // creat a map function 
 
@@ -109,7 +112,10 @@ class Background extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, 3200, 1600);
     this.physics.add.collider(player, layers.platforms)
     // gets the collectable object and display it 
-    //const collecLayer = this.getCollectable(layers.collectLayer)
+
+    const collectable = this.getCollectable(layers.collectLayer);
+    this.physics.add.overlap(player, collectable, this.oncollect)
+
     this.scene.resume();
   }
 
@@ -126,23 +132,40 @@ class Background extends Phaser.Scene {
     // gets the  objects from json 
     // give the partameter with the Tiled mapname 
     const playerZone = map.getObjectLayer('player_Zone').objects;
-    //const collectLayer = map.getObjectLayer('collectable').objects;
+    const collectLayer = map.getObjectLayer('collectable')['objects'];
+    const door = map.getObjectLayer('door')
     platforms.setCollisionByExclusion(-1, true);
 
-    return { background, platforms, playerZone }
+
+    return {
+      background,
+      platforms,
+      playerZone,
+      collectLayer,
+      door
+    }
   }
 
   // adds the collectable as a group of objects 
   // apply foreach collectableLayer object 
-  // get the each of the collectable object x and vale 
-  // retrun the value of the collectable 
+  // creat the each of the collectable object x and y value 
+  // retrun the value of the collectable  object 
   getCollectable(collectableLayer) {
     const collectables = this.physics.add.staticGroup();
     collectableLayer.forEach((collect) => {
-      collectables.get(collect.x, collect.y, 'star')
-      return collectables
+      collectables.get(collect.x, collect.y, 'dimond')
+
+
 
     })
+    return collectables
+  }
+  // the first true will dsiable game object 
+  // the second true will deactivate object 
+  oncollect(player, collectable) {
+
+    collectable.disableBody(true, true)
+
   }
   // cretas the enmey function 
   creatEnemy() {

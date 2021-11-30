@@ -203,7 +203,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       //SET SIZE BACK TO NORMAL AFTER SLIDE
       else {
         this.setBodySize(20, 30);
-        if(!damageCheck)this.alpha = 1;
+        if (!damageCheck) this.alpha = 1;
       }
 
       //IF PLAYER IS TURNED TO THE RIGHT
