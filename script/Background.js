@@ -4,14 +4,14 @@ let mapName;
 let map;
 let enemy;
 let damageCheck = false;
-
+let scoreText;
+let score = 0;
 
 class Background extends Phaser.Scene {
 
 
   constructor(config) {
     super({ key: "Background" })
-
 
 
   }
@@ -71,6 +71,13 @@ class Background extends Phaser.Scene {
     //this.endOfLevel(playerZone.end, this.player)
     //---------------------- end ---------------------
 
+
+
+    // ----------------score ------------
+    // --------------- Adding Scroe----
+    scoreText = this.add.text(1000, 240, 'score: 0', { fontSize: '20px', fill: 'lightgreen' });
+    scoreText.setScrollFactor(0, 0).setScale(1.5).setDepth(99)
+    //----- end------------
     //CREATE CAMERA IN THE BACKGROUND CLASS
     //NEED ONE CAMERA IN EACH CLASS BECAUSE THE BACKGROUND AND PLAYER CLASSES ARE SEPERATE SCENES
 
@@ -165,6 +172,9 @@ class Background extends Phaser.Scene {
   oncollect(player, collectable) {
 
     collectable.disableBody(true, true)
+    score += 10;
+    console.log(score, "scroe")
+    scoreText.setText('Score: ' + score);
 
   }
   // cretas the enmey function 
@@ -230,6 +240,8 @@ class Background extends Phaser.Scene {
 
 
   update() {
+
+
     //this.physics.add.collider(this.player.player, layers.platforms)
     if (testLet == 0) console.log(this.player + "update")
     testLet = 1;
