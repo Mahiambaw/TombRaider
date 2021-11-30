@@ -25,7 +25,7 @@ var config = {
 
     }
   },
-  parent: Background,
+
   scene: [Background]
 
 };
