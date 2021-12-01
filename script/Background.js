@@ -37,6 +37,8 @@ class Background extends Phaser.Scene {
   }
 
   create() {
+    console.log("background create")
+    allowControls = true;
     mapName = "map"
     map = this.creatMap(mapName);
 
@@ -55,6 +57,7 @@ class Background extends Phaser.Scene {
 
     this.physics.add.collider(player, layers.platforms)
     this.physics.add.collider(enemy, layers.platforms)
+    this.physics.add.overlap(player, enemy, this.takeDamage, null, this)
 
 
 
@@ -114,6 +117,17 @@ class Background extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, window.width, window.height);
     this.cameras.main.setZoom(2);
+
+    this.cameras.main.on('camerafadeoutcomplete', function () {
+      console.log(player.body)
+      animCheck = false;
+      player.destroy();
+      enemy.destroy();
+      console.log(player);
+      this.scene.restart();// restart current scene
+      console.log(player.body)  
+  
+    }, this);
 
   }
 
@@ -322,72 +336,85 @@ class Background extends Phaser.Scene {
   }
 
 
-
+  takeDamage() {
+    if(player.alpha == 1 && enemy.active) {
+      player.hb.decrease(50);
+      if(player.hb.value == 0) {
+        console.log(player.body)
+        player.anims.play("death");
+        animCheck = true;
+        allowControls = false;
+        enemy.active = false;
+        enemy.alpha = 0;
+        player.setVelocityX(0);
+        console.log(player.body)
+        this.cameras.main.fade(2000, "#ffffff");
+      }
+      else {
+        player.alpha = 0.5;
+        damageCheck = true;
+        setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
+      }
+    }
+  }
 
 
 
 
 
   update() {
+    if(allowControls) {
+      //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
+      if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-
-    //this.physics.add.collider(this.player.player, layers.platforms)
-    if (testLet == 0) console.log(this.player + "update")
-    testLet = 1;
-    //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
-    if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
-
-    if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
-      enemy.setActive(false).setVisible(false);
-    }
-    if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), player.getBounds()) && player.alpha == 1) {
-      if (player.hb !== 0) {
-        player.hb.decrease(10);
-        player.alpha = 0.5;
-        damageCheck = true;
-        setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
+      if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
+        enemy.setActive(false).setVisible(false);
       }
-    }
-    // see if this and player within 400px of each other
-    if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
 
-      // if player to left of this AND this moving to right (or not moving)
-      if (enemy.body.velocity.x >= 0) {
-        if (player.x < enemy.x) {
-          // move this to left
-          enemy.body.velocity.x = -150;
+      // see if this and player within 400px of each other
+      if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
+
+        // if player to left of this AND this moving to right (or not moving)
+        if (enemy.body.velocity.x >= 0) {
+          if (player.x < enemy.x) {
+            // move this to left
+            enemy.body.velocity.x = -150;
+          }
+        }
+        // if player to right of this AND this moving to left (or not moving)
+        else if (enemy.body.velocity.x <= 0) {
+          if (player.x > enemy.x) {
+            // move this to right
+            enemy.body.velocity.x = 150;
+          }
         }
       }
-      // if player to right of this AND this moving to left (or not moving)
-      else if (enemy.body.velocity.x <= 0) {
-        if (player.x > enemy.x) {
+
+      // thisGroup.forEachAlive(function (this) {
+      // if bottom positions equal (could be on same platform) AND player within 300px
+      if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
+        // if player to left of this AND this moving to right
+        if (player.x < enemy.x && enemy.body.velocity.x > 0) {
+          // move this to left            
+          enemy.body.velocity.x *= -1; // reverse direction
+          // or could set directly: this.body.velocity.x = -150;        
+          // could add other code - change this animation, make this fire weapon, etc.
+
+        }
+        // if player to right of this AND this moving to left
+        else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
           // move this to right
-          enemy.body.velocity.x = 150;
+          enemy.body.velocity.x *= -1; // reverse direction
+          // or could set directly: this.body.velocity.x = 150;
+          // could add other code - change this animation, make this fire weapon, etc.
+
         }
-      }
-    }
-
-    // thisGroup.forEachAlive(function (this) {
-    // if bottom positions equal (could be on same platform) AND player within 300px
-    if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
-      // if player to left of this AND this moving to right
-      if (player.x < enemy.x && enemy.body.velocity.x > 0) {
-        // move this to left            
-        enemy.body.velocity.x *= -1; // reverse direction
-        // or could set directly: this.body.velocity.x = -150;        
-        // could add other code - change this animation, make this fire weapon, etc.
-
-      }
-      // if player to right of this AND this moving to left
-      else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
-        // move this to right
-        enemy.body.velocity.x *= -1; // reverse direction
-        // or could set directly: this.body.velocity.x = 150;
-        // could add other code - change this animation, make this fire weapon, etc.
-
       }
     }
     // });
+
+    if (testLet == 0) console.log(this.player + "update");
+    testLet = 1;
   }
 
 
