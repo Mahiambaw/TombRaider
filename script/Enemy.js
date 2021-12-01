@@ -1,8 +1,6 @@
-let enemy;
 let stepLimit = 100;
 let center;
 let stepCount;
-let enemyGroup;
 class Enemy extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
     super(scene, x, y, "enemy")
@@ -72,14 +70,14 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
       //-------- end-----------------
 
 
-    // this.body.setGravityY(700);
-    // this.setCollideWorldBounds(true);
+    this.body.setGravityY(700);
+    this.setCollideWorldBounds(true);
     // this.body.velocity.x = 100;
     // this.stepCount = 0
     // this.body.bounce.x = 1;
-    // // platforms.setAll('body.immovable', true);
+    // // 
 
-    enemyGroup.getChildren().forEach(function(this) {
+   /* enemyGroup.getChildren().forEach(function(this) {
       this.setCollideWorldBounds(true);
       this.body.setGravityY(700);
       this.body.velocity.x = 50
@@ -87,7 +85,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
       this.stepCount =  Phaser.Math.Between(0, stepLimit)
       enemy.body.bounce.x = 1;
       // physics.add.collider(enemy, platforms);
-  });
+  });*/
 
   }
 
@@ -101,32 +99,32 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
 
   update() {
   
-    enemyGroup.getChildren().forEach(function(this) {
+    enemyGroup.getChildren().forEach(function(enemyOnce) {
     // thisGroup.forEachAlive(function (this) {
         // increase this's step counter
-        this.stepCount++;
+        enemyOnce.stepCount++;
         // check if this's step counter has reach limit
-        if (this.stepCount > stepLimit) {
+        if (enemyOnce.stepCount > stepLimit) {
             // reverse this direction
-            this.body.velocity.x *= -1;
+            enemyOnce.body.velocity.x *= -1;
             // reset this's step counter
-            this.stepCount = 0;
+            enemyOnce.stepCount = 0;
             // can add other code - change this animation, etc.
         }
      
 
-        if (this.body.velocity.x > 0){
+        if (enemyOnce.body.velocity.x > 0){
           // this.anims.play('enemy_run', true)
-          this.flipX = true
+          enemyOnce.flipX = true
        }
-       else if(this.body.velocity.x < 0){
+       else if(enemyOnce.body.velocity.x < 0){
           // this.anims.play('enemy_run', true)
-          this.flipX = false
+          enemyOnce.flipX = false
        }
        else {
-         this.anims.play('enemy_idle', true)
+         enemyOnce.anims.play('enemy_idle', true)
        } 
     });
-    //......................
+    //......................*/
   }
 }

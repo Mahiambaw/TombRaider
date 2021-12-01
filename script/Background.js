@@ -2,10 +2,11 @@
 let player;
 let mapName;
 let map;
-let enemy;
 let damageCheck = false;
 let scoreText;
 let score = 0;
+let enemyGroup;
+
 
 class Background extends Phaser.Scene {
 
@@ -26,6 +27,8 @@ class Background extends Phaser.Scene {
     this.load.image('dimond', './assets/dungeoun/dimond.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
+
+    enemyGroup = this.add.group();
   }
 
   create() {
@@ -40,6 +43,8 @@ class Background extends Phaser.Scene {
     // gets the collectable object and display it 
     // const collecLayer = this.getCollectable(layers.collectLayer)
     player = new Player(this, x, y);
+
+
     //for each enemy object create:
 
     //for each enemy object create:
@@ -56,23 +61,28 @@ class Background extends Phaser.Scene {
     // enemyGroup.create(700, 0, enemy , 8);
     // }
     //.............................
-    enemyGroup = this.physics.add.group();
                                 
     for (var i=0 ; i<= 2 ; i++){
-    enemy = new Enemy(this, 700 + (i*200), 0);
     // let enemyPositionX = Phaser.Math.Between(200, 1000);
     // let enemyPositionY = 0;
     // enemyGroup.create(enemyPositionX, enemyPositionY, 'enemy', 8)
-    enemyGroup.create(enemy);
+    enemyGroup.add(new Enemy(this, 100*i, 100));
     }
 
     //............................
     //with position from tiled8
-
+    console.log(game + "outside")
     this.physics.add.collider(player, layers.platforms)
     //...........................
     // this.physics.add.collider(enemy, layers.platforms)
-    this.physics.add.collider(enemyGroup, layers.platforms)
+    enemyGroup.getChildren().forEach((enemyOnce) => {
+      console.log(enemyOnce.body);
+      
+    })
+    setTimeout( () => {console.log("askdlj"),this.physics.add.collider(enemyGroup, layers.platforms, () => {console.log("touch")})}, 500);
+
+      console.log(enemyGroup.getChildren());
+      
     // this.physics.add.collider(enemyGroup, layers.platforms, patrolPlatform, null, this);
     //.................
 
@@ -112,6 +122,7 @@ class Background extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, window.width, window.height);
     this.cameras.main.setZoom(2);
+
 
   }
 
@@ -270,12 +281,13 @@ class Background extends Phaser.Scene {
 
   update() {
 
-
     //this.physics.add.collider(this.player.player, layers.platforms)
-    if (testLet == 0) console.log(this.player + "update")
+    if (testLet == 0) console.log(this.player + "update");
     testLet = 1;
     //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
     if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
+
+    enemyGroup.getChildren().forEach(function(enemy) {    
 
     if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
       enemy.setActive(false).setVisible(false);
@@ -288,13 +300,12 @@ class Background extends Phaser.Scene {
         setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
       }
     }
-
-    enemyGroup.getChildren().forEach(function(enemy) {    
     // see if this and player within 300px of each other
     if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
+      console.log(Phaser.Math.Distance.Between(player.x, null, enemy.x, null))
 
       // if player to left of this AND this moving to right (or not moving)
-      if (enemy.body.velocity.x >= 0) {
+      if (enemy.body.velocity.x > 0) {
         if (player.x < enemy.x) {
           // move this to left
           enemy.body.velocity.x = -150;
@@ -322,6 +333,7 @@ class Background extends Phaser.Scene {
       enemy.anims.play('enemy_die', true)
     }
     });
+    
   }
 
 
