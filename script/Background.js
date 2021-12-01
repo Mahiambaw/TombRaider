@@ -5,7 +5,11 @@ let map;
 let enemy;
 let damageCheck = false;
 let scoreText;
+let key = 0;
 let score = 0;
+let keys;
+let keyText
+let doorText
 
 class Background extends Phaser.Scene {
 
@@ -24,6 +28,10 @@ class Background extends Phaser.Scene {
     this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 41.4, frameHeight: 41.4 });
     this.load.image('tile', './assets/dungeoun/tileset.png')
     this.load.image('dimond', './assets/dungeoun/dimond.png')
+    this.load.image('spin', './assets/dungeoun/dimond_anim.png')
+
+    this.load.image('key', './assets/level2/key.png')
+    this.load.image('door', './assets/level2/lockdoorr.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
   }
@@ -31,6 +39,7 @@ class Background extends Phaser.Scene {
   create() {
     mapName = "map"
     map = this.creatMap(mapName);
+
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone
       (layers.playerZone)
@@ -66,10 +75,18 @@ class Background extends Phaser.Scene {
 
     this.physics.add.overlap(player, collectable, this.oncollect)
 
+    this.anims.create({
+      key: 'shine',
+      frames: this.anims.generateFrameNumbers('spin', { start: 0, end: 7 }),
+      frameRate: 10,
+      repeat: -1
+    });
     this.endOfLevel(playerZone.end, player);
     //this.physics.add.collider(this.enemy, this.player)
     //this.endOfLevel(playerZone.end, this.player)
     //---------------------- end ---------------------
+
+    // animaition for dimond
 
 
 
@@ -77,6 +94,18 @@ class Background extends Phaser.Scene {
     // --------------- Adding Scroe----
     scoreText = this.add.text(1000, 240, 'score: 0', { fontSize: '20px', fill: 'lightgreen' });
     scoreText.setScrollFactor(0, 0).setScale(1.5).setDepth(99)
+    // ------- end of score----------
+    keyText = this.add.text(800, 240, 'Key', { fontSize: '20px', fill: 'lightgreen' });
+    keyText.setScrollFactor(0, 0).setScale(1.5).setDepth(99);
+
+    keyText.visible = false;
+
+    doorText = this.add.text(800, 500, 'Key', { fontSize: '20px', fill: 'lightgreen' });
+
+
+    //doorText.visible = false;
+
+
     //----- end------------
     //CREATE CAMERA IN THE BACKGROUND CLASS
     //NEED ONE CAMERA IN EACH CLASS BECAUSE THE BACKGROUND AND PLAYER CLASSES ARE SEPERATE SCENES
@@ -116,12 +145,24 @@ class Background extends Phaser.Scene {
     let y = playerZone.start.y;
     player.x = x;
     player.y = y;
+
+    enemy.x = x
+    enemy.y = y
+
     this.physics.world.setBounds(0, 0, 3200, 1600);
     this.physics.add.collider(player, layers.platforms)
+    this.physics.add.collider(enemy, layers.platforms)
     // gets the collectable object and display it 
 
+    let doorLayer = this.getDoorLayer(layers.doorLayer)
     const collectable = this.getCollectable(layers.collectLayer);
+    const collectKey = this.addkeys(layers.keyLayer)
+    const collectDoor = this.adddoor(doorLayer.door)
+
     this.physics.add.overlap(player, collectable, this.oncollect)
+
+    this.physics.add.overlap(player, collectKey, this.keyCollect)
+    this.physics.add.collider(player, collectDoor, this.doorCollect)
 
     this.scene.resume();
   }
@@ -140,7 +181,8 @@ class Background extends Phaser.Scene {
     // give the partameter with the Tiled mapname 
     const playerZone = map.getObjectLayer('player_Zone').objects;
     const collectLayer = map.getObjectLayer('collectable')['objects'];
-    const door = map.getObjectLayer('door')
+    const keyLayer = map.getObjectLayer('keys').objects
+    const doorLayer = map.getObjectLayer('door').objects
     platforms.setCollisionByExclusion(-1, true);
 
 
@@ -149,7 +191,8 @@ class Background extends Phaser.Scene {
       platforms,
       playerZone,
       collectLayer,
-      door
+      doorLayer,
+      keyLayer
     }
   }
 
@@ -163,19 +206,55 @@ class Background extends Phaser.Scene {
       collectables.get(collect.x, collect.y, 'dimond')
 
 
-
     })
+
+    collectables.playAnimation('shine')
+
     return collectables
   }
+  addkeys(keyLayer) {
+    const keys = this.physics.add.staticGroup();
+    keyLayer.forEach((key) => {
+      keys.get(key.x, key.y, "key")
+    })
+    return keys
+  }
+  adddoor(doorLayer) {
+    const doors = this.physics.add.sprite(doorLayer.x, doorLayer.y, "door");
+    doors.body.allowGravity = false;
+    doors.setImmovable(true)
+
+    return doors
+
+  }
+
   // the first true will dsiable game object 
   // the second true will deactivate object 
   oncollect(player, collectable) {
 
+
     collectable.disableBody(true, true)
     score += 10;
-    console.log(score, "scroe")
+
     scoreText.setText('Score: ' + score);
 
+  }
+  keyCollect(player, collectKey) {
+    collectKey.disableBody(true, true)
+    key++;
+    keyText.setText('Key: ' + key);
+    keyText.visible = true;
+
+  }
+  doorCollect(player, doorLayer) {
+    if (key == 2 && key != 0) {
+      console.log(" all keyes have been collected")
+      doorLayer.destroy();
+
+    }
+    else {
+      console.log(" you need two keyes to pass")
+    }
   }
   // cretas the enmey function 
   creatEnemy() {
@@ -201,6 +280,14 @@ class Background extends Phaser.Scene {
     return {
       start: playerZone[0],
       end: playerZone[1]
+
+    }
+  }
+  getDoorLayer(doorLayer) {
+    let doorLayers = doorLayer
+    return {
+      door: doorLayers[0],
+
 
     }
   }

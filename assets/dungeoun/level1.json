@@ -217,8 +217,30 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":8,
+         "name":"keys",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":9,
+         "name":"door",
+         "objects":[],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":8,
+ "nextlayerid":10,
  "nextobjectid":98,
  "orientation":"orthogonal",
  "renderorder":"right-down",
@@ -259,6 +281,19 @@
                  "imageheight":24,
                  "imagewidth":23
                 }],
+         "tilewidth":32
+        }, 
+        {
+         "columns":1,
+         "firstgid":1026,
+         "image":"..\/..\/..\/..\/Downloads\/key.png",
+         "imageheight":32,
+         "imagewidth":37,
+         "margin":0,
+         "name":"key",
+         "spacing":0,
+         "tilecount":1,
+         "tileheight":32,
          "tilewidth":32
         }],
  "tilewidth":32,
