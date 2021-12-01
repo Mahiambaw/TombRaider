@@ -28,7 +28,7 @@ class Background extends Phaser.Scene {
     this.load.spritesheet('enemy', '../assets/sprites/enemy.png', { frameWidth: 41.4, frameHeight: 41.4 });
     this.load.image('tile', './assets/dungeoun/tileset.png')
     this.load.image('dimond', './assets/dungeoun/dimond.png')
-    this.load.image('spin', './assets/dungeoun/dimond_anim.png')
+    this.load.spritesheet('spin', './assets/dungeoun/dimond_anim.png', { frameWidth: 30, frameHeight: 30 })
 
     this.load.image('key', './assets/level2/key.png')
     this.load.image('door', './assets/level2/lockdoorr.png')
@@ -71,16 +71,18 @@ class Background extends Phaser.Scene {
     //this.scene.launch("player", Player);
 
     // enemy animation --------------------
-    const collectable = this.getCollectable(layers.collectLayer);
 
-    this.physics.add.overlap(player, collectable, this.oncollect)
 
     this.anims.create({
       key: 'shine',
-      frames: this.anims.generateFrameNumbers('spin', { start: 0, end: 7 }),
+      frames: this.anims.generateFrameNumbers('spin', { start: 0, end: 6 }),
       frameRate: 10,
       repeat: -1
     });
+
+    const collectable = this.getCollectable(layers.collectLayer);
+
+    this.physics.add.overlap(player, collectable, this.oncollect)
     this.endOfLevel(playerZone.end, player);
     //this.physics.add.collider(this.enemy, this.player)
     //this.endOfLevel(playerZone.end, this.player)
