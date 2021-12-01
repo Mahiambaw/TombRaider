@@ -41,11 +41,40 @@ class Background extends Phaser.Scene {
     // const collecLayer = this.getCollectable(layers.collectLayer)
     player = new Player(this, x, y);
     //for each enemy object create:
-    enemy = new Enemy(this, 700, 500);
+
+    //for each enemy object create:
+    //.............................
+    // enemy = new Enemy(this, 700 , 500);
+
+    // enemyGroup = this.physics.add.group();
+                                
+    // for (var i=0 ; i<= 2 ; i++){
+    // enemy = new Enemy(this, 700 , 0);
+    // // let enemyPositionX = Phaser.Math.Between(200, 1000);
+    // // let enemyPositionY = 0;
+    // enemyGroup.create(enemyPositionX, enemyPositionY, 'enemy', 8)
+    // enemyGroup.create(700, 0, enemy , 8);
+    // }
+    //.............................
+    enemyGroup = this.physics.add.group();
+                                
+    for (var i=0 ; i<= 2 ; i++){
+    enemy = new Enemy(this, 700 + (i*200), 0);
+    // let enemyPositionX = Phaser.Math.Between(200, 1000);
+    // let enemyPositionY = 0;
+    // enemyGroup.create(enemyPositionX, enemyPositionY, 'enemy', 8)
+    enemyGroup.create(enemy);
+    }
+
+    //............................
     //with position from tiled8
 
     this.physics.add.collider(player, layers.platforms)
-    this.physics.add.collider(enemy, layers.platforms)
+    //...........................
+    // this.physics.add.collider(enemy, layers.platforms)
+    this.physics.add.collider(enemyGroup, layers.platforms)
+    // this.physics.add.collider(enemyGroup, layers.platforms, patrolPlatform, null, this);
+    //.................
 
 
 
@@ -259,7 +288,9 @@ class Background extends Phaser.Scene {
         setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
       }
     }
-    // see if this and player within 400px of each other
+
+    enemyGroup.getChildren().forEach(function(enemy) {    
+    // see if this and player within 300px of each other
     if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
 
       // if player to left of this AND this moving to right (or not moving)
@@ -273,32 +304,24 @@ class Background extends Phaser.Scene {
       else if (enemy.body.velocity.x <= 0) {
         if (player.x > enemy.x) {
           // move this to right
-          enemy.body.velocity.x = 150;
+          enemy.body.velocity.x = 150; 
         }
       }
-    }
-
-    // thisGroup.forEachAlive(function (this) {
-    // if bottom positions equal (could be on same platform) AND player within 300px
-    if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
-      // if player to left of this AND this moving to right
-      if (player.x < enemy.x && enemy.body.velocity.x > 0) {
-        // move this to left            
-        enemy.body.velocity.x *= -1; // reverse direction
-        // or could set directly: this.body.velocity.x = -150;        
-        // could add other code - change this animation, make this fire weapon, etc.
-
+     
+      if (Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 60) {
+        enemy.anims.play('enemy_slash', true)
       }
-      // if player to right of this AND this moving to left
-      else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
-        // move this to right
-        enemy.body.velocity.x *= -1; // reverse direction
-        // or could set directly: this.body.velocity.x = 150;
-        // could add other code - change this animation, make this fire weapon, etc.
-
+      else{
+        enemy.anims.play('enemy_run', true)
       }
     }
-    // });
+    else {
+      enemy.anims.play('enemy_walk', true)
+    }
+    if (!enemy) {
+      enemy.anims.play('enemy_die', true)
+    }
+    });
   }
 
 
