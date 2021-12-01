@@ -6,7 +6,7 @@ let box;
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
-    super(scene, x, y, "dude")
+    super(scene, x, y, "dude", "step")
     scene.add.existing(this)
     scene.physics.add.existing(this)
 
@@ -26,7 +26,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // creat a new object of the healthBar 
     // provide each of the values
     this.hb = new HealthBar(this.scene, 500, 250, 1.5, 100)
-
 
     this.body.setGravityY(this.gravity);
     this.setCollideWorldBounds(true);

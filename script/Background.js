@@ -8,8 +8,10 @@ let scoreText;
 let key = 0;
 let score = 0;
 let keys;
-let keyText
-let doorText
+let keyText;
+let doorText;
+let step;
+let soundInterval = false;
 
 class Background extends Phaser.Scene {
 
@@ -34,6 +36,16 @@ class Background extends Phaser.Scene {
     this.load.image('door', './assets/level2/lockdoorr.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
+    
+    //-----------SOUNDS---------------
+    this.load.audio('step', './assets/sounds/dirt_run3.ogg');
+    this.load.audio('dmg', './assets/sounds/hurt.wav');
+    this.load.audio('hurt', './assets/sounds/lose.wav');
+    this.load.audio('keypickup', './assets/sounds/win.wav');
+    this.load.audio('coinpickup', './assets/sounds/coin.wav');
+
+    
+    //-----------ENDSOUNDS-------------
   }
 
   create() {
@@ -41,6 +53,8 @@ class Background extends Phaser.Scene {
     allowControls = true;
     mapName = "map"
     map = this.creatMap(mapName);
+
+    step = this.sound.add('step');
 
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone
@@ -366,6 +380,9 @@ class Background extends Phaser.Scene {
     if(allowControls) {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
+
+      if (player.body.velocity.x != 0 && player.body.velocity.y == 0 && !soundInterval) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
+      if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 
       if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
         enemy.setActive(false).setVisible(false);
