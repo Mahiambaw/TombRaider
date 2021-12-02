@@ -1,4 +1,4 @@
-let allowControls = true;
+let allowControls = false;
 let animCheck = 0;
 let dbJump = 0;
 let thingCheck = 0;

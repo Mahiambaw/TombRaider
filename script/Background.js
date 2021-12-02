@@ -14,6 +14,9 @@ let step;
 let soundInterval = false;
 let enemyGroup;
 let collectable;
+let menu;
+
+
 
 class Background extends Phaser.Scene {
 
@@ -52,7 +55,7 @@ class Background extends Phaser.Scene {
 
   create() {
     console.log("background create")
-    allowControls = true;
+    //allowControls = true;
     mapName = "map"
     map = this.creatMap(mapName);
 
@@ -75,6 +78,8 @@ class Background extends Phaser.Scene {
     enemySpawn.forEach((coordinates) => {
       enemyGroup.add(new Enemy(this, coordinates.x, coordinates.y));
     })
+
+    menu = this.scene.add('menu', Menu, true)
       
 
     this.physics.add.collider(player, layers.platforms)
@@ -206,6 +211,7 @@ class Background extends Phaser.Scene {
     this.physics.add.collider(player, collectDoor, this.doorCollect)
 
     this.scene.resume();
+    allowControls = true;
   }
 
   // creat a  layer function 
@@ -389,6 +395,8 @@ class Background extends Phaser.Scene {
 
 
   update() {
+
+
     if(allowControls) {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
@@ -397,60 +405,56 @@ class Background extends Phaser.Scene {
       if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 
       enemyGroup.getChildren().forEach((enemy) => {
-        if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
-          enemy.setActive(false).setVisible(false);
+        if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active && enemy.enemySituation == 1) {
+          enemy.enemySituation = 0;
+          enemy.anims.play('enemy_die', true)
+          enemy.setVelocity(0);
+          setTimeout(() => {enemy.setActive(false).setVisible(false)}, 2000)
+          // enemy.setActive(false).setVisible(false);
         }
+        
+        if (enemy.enemySituation == 1) {
+          // see if this and player within 400px of each other
+          if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
 
-        // see if this and player within 400px of each other
-        if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
-
-          // if player to left of this AND this moving to right (or not moving)
-          if (enemy.body.velocity.x >= 0) {
-            if (player.x < enemy.x) {
-              // move this to left
-              enemy.body.velocity.x = -150;
+            // if player to left of this AND this moving to right (or not moving)
+            if (enemy.body.velocity.x >= 0) {
+              if (player.x < enemy.x) {
+                // move this to left
+                enemy.body.velocity.x = -150;
+              }
+            }
+            // if player to right of this AND this moving to left (or not moving)
+            else if (enemy.body.velocity.x <= 0) {
+              if (player.x > enemy.x) {
+                // move this to right
+                enemy.body.velocity.x = 150;
+              }
+            }
+            if (Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 80) {
+              enemy.anims.play('enemy_slash', true)
+            }
+            else{
+              enemy.anims.play('enemy_run', true)
             }
           }
-          // if player to right of this AND this moving to left (or not moving)
-          else if (enemy.body.velocity.x <= 0) {
-            if (player.x > enemy.x) {
-              // move this to right
-              enemy.body.velocity.x = 150;
-            }
-          }
-        }
-
-        // thisGroup.forEachAlive(function (this) {
-        // if bottom positions equal (could be on same platform) AND player within 300px
-        if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
-          // if player to left of this AND this moving to right
-          if (player.x < enemy.x && enemy.body.velocity.x > 0) {
-            // move this to left            
-            enemy.body.velocity.x *= -1; // reverse direction
-            // or could set directly: this.body.velocity.x = -150;        
-            // could add other code - change this animation, make this fire weapon, etc.
-
-          }
-          // if player to right of this AND this moving to left
-          else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
-            // move this to right
-            enemy.body.velocity.x *= -1; // reverse direction
-            // or could set directly: this.body.velocity.x = 150;
-            // could add other code - change this animation, make this fire weapon, etc.
-
+          else { 
+            enemy.anims.play('enemy_walk', true)
           }
         }
       });
     }
     
-    // });
-
-    if (testLet == 0) console.log(this.player + "update");
-    testLet = 1;
+  
+  else { 
+      player.anims.play('idle', true);
+      enemyGroup.getChildren().forEach((enemy) => {
+        enemy.anims.play('enemy_idle', true)
+        enemy.body.velocity.x = 0;
+        enemy.flipX = false
+      })
   }
-
-
-
+  }
 }
 
 
