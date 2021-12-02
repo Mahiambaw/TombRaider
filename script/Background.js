@@ -45,11 +45,12 @@ class Background extends Phaser.Scene {
     enemyGroup = this.add.group();
     
     //-----------SOUNDS---------------
-    //this.load.audio('step', './assets/sounds/wood_walk3.ogg');
+    this.load.audio('step', './assets/sounds/dirt_run3.ogg');
     this.load.audio('dmg', './assets/sounds/hurt.wav');
     this.load.audio('deathsound', './assets/sounds/death.wav');
     this.load.audio('keypickup', './assets/sounds/win.wav');
     this.load.audio('coinpickup', './assets/sounds/coin.wav');
+
     //-----------ENDSOUNDS-------------
   }
 
@@ -62,6 +63,7 @@ class Background extends Phaser.Scene {
     keypickup = this.sound.add('keypickup');
     hurt = this.sound.add('dmg');
     deathSound = this.sound.add('deathsound');
+    step = this.sound.add('step');
 
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone(layers.playerZone)
