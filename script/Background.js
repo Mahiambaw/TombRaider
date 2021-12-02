@@ -14,6 +14,9 @@ let step;
 let soundInterval = false;
 let enemyGroup;
 let collectable;
+let hurt;
+let keypickup;
+let deathSound;
 
 class Background extends Phaser.Scene {
 
@@ -42,9 +45,9 @@ class Background extends Phaser.Scene {
     enemyGroup = this.add.group();
     
     //-----------SOUNDS---------------
-    this.load.audio('step', './assets/sounds/dirt_run3.ogg');
+    //this.load.audio('step', './assets/sounds/wood_walk3.ogg');
     this.load.audio('dmg', './assets/sounds/hurt.wav');
-    this.load.audio('hurt', './assets/sounds/lose.wav');
+    this.load.audio('deathsound', './assets/sounds/death.wav');
     this.load.audio('keypickup', './assets/sounds/win.wav');
     this.load.audio('coinpickup', './assets/sounds/coin.wav');
     //-----------ENDSOUNDS-------------
@@ -56,7 +59,9 @@ class Background extends Phaser.Scene {
     mapName = "map"
     map = this.creatMap(mapName);
 
-    step = this.sound.add('step');
+    keypickup = this.sound.add('keypickup');
+    hurt = this.sound.add('dmg');
+    deathSound = this.sound.add('deathsound');
 
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone(layers.playerZone)
@@ -192,7 +197,7 @@ class Background extends Phaser.Scene {
 
     this.physics.world.setBounds(0, 0, 3200, 1600);
     this.physics.add.collider(player, layers.platforms)
-    enemyGroup.getChildren().forEach((enemy) => {this.physics.add.collider(enemy, layers.platforms)})
+    enemyGroup.getChildren().forEach((enemy) => {this.physics.add.collider(enemy, layers.platforms); this.physics.add.overlap(player, enemy, () => {this.takeDamage(enemy)}, null, this)})
     // gets the collectable object and display it 
 
     let doorLayer = this.getDoorLayer(layers.doorLayer)
@@ -274,8 +279,6 @@ class Background extends Phaser.Scene {
   // the first true will dsiable game object 
   // the second true will deactivate object 
   oncollect(player, collectable) {
-
-
     collectable.destroy();
     score += 10;
 
@@ -283,6 +286,7 @@ class Background extends Phaser.Scene {
 
   }
   keyCollect(player, collectKey) {
+    keypickup.play();
     collectKey.disableBody(true, true)
     key++;
     keyText.setText('Key: ' + key);
@@ -368,6 +372,7 @@ class Background extends Phaser.Scene {
     if(player.alpha == 1 && enemy.active) {
       player.hb.decrease(50);
       if(player.hb.value == 0) {
+        deathSound.play();
         player.anims.play("death");
         animCheck = true;
         allowControls = false;
@@ -377,6 +382,7 @@ class Background extends Phaser.Scene {
         this.cameras.main.fade(2000, "#ffffff");
       }
       else {
+        hurt.play();
         player.alpha = 0.5;
         damageCheck = true;
         setTimeout(() => { player.alpha = 1; damageCheck = false }, 1000)
@@ -393,7 +399,8 @@ class Background extends Phaser.Scene {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-      if (player.body.velocity.x != 0 && player.body.velocity.y == 0 && !soundInterval) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
+      //if (player.body.velocity.x != 0 && player.body.onFloor() && !soundInterval && !animCheck) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
+      //else if (player.body.velocity.x == 0 || !player.body.onFloor() || animCheck) {step.pause()}
       if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 
       enemyGroup.getChildren().forEach((enemy) => {
