@@ -1,12 +1,4 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"tmx",
-         "target":"level1.tmx"
-        }
-    },
  "height":25,
  "infinite":false,
  "layers":[
@@ -64,11 +56,58 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1504.72727272727,
-                 "y":489.151515151515
+                 "x":1504.73,
+                 "y":489.152
                 }],
-         "offsetx":3.27272727272725,
-         "offsety":-2.48484848484844,
+         "offsetx":3.27273,
+         "offsety":-2.48485,
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":10,
+         "name":"enemies",
+         "objects":[
+                {
+                 "height":0,
+                 "id":98,
+                 "name":"1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":710.803973591658,
+                 "y":467.945949281175
+                }, 
+                {
+                 "height":0,
+                 "id":99,
+                 "name":"1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":906.275066329364,
+                 "y":454.124760905781
+                }, 
+                {
+                 "height":0,
+                 "id":100,
+                 "name":"1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1429.50576911211,
+                 "y":477.81822669217
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -81,7 +120,7 @@
          "name":"collectable",
          "objects":[
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":79,
                  "name":"",
@@ -93,7 +132,7 @@
                  "y":295
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":84,
                  "name":"",
@@ -105,7 +144,7 @@
                  "y":294
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":85,
                  "name":"",
@@ -117,7 +156,7 @@
                  "y":293
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":86,
                  "name":"",
@@ -129,7 +168,7 @@
                  "y":295
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":87,
                  "name":"",
@@ -141,7 +180,7 @@
                  "y":208
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":88,
                  "name":"",
@@ -153,7 +192,7 @@
                  "y":208
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":89,
                  "name":"",
@@ -165,7 +204,7 @@
                  "y":210
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":90,
                  "name":"",
@@ -177,7 +216,7 @@
                  "y":208
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":92,
                  "name":"",
@@ -189,7 +228,7 @@
                  "y":431
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":96,
                  "name":"",
@@ -201,7 +240,7 @@
                  "y":430
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":97,
                  "name":"",
@@ -240,8 +279,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":10,
- "nextobjectid":98,
+ "nextlayerid":11,
+ "nextobjectid":101,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
@@ -256,13 +295,13 @@
          "margin":0,
          "name":"tileset",
          "spacing":0,
-         "tilecount":1024,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }, 
         {
          "columns":0,
-         "firstgid":1025,
+         "firstgid":984,
          "grid":
             {
              "height":1,
@@ -278,21 +317,21 @@
                 {
                  "id":0,
                  "image":"dimond.png",
-                 "imageheight":24,
-                 "imagewidth":23
+                 "imageheight":18,
+                 "imagewidth":31
                 }],
          "tilewidth":32
         }, 
         {
          "columns":1,
-         "firstgid":1026,
+         "firstgid":985,
          "image":"..\/..\/..\/..\/Downloads\/key.png",
          "imageheight":32,
          "imagewidth":37,
          "margin":0,
          "name":"key",
          "spacing":0,
-         "tilecount":1,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }],
