@@ -18,64 +18,54 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
     // this animation --------------------
     this.scene.anims.create({
         key: 'enemy_idle',
-        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 66, end: 67 }),
+        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 67, end: 68 }),
         frameRate: 8,
         repeat: -1
   
       })
   
       this.scene.anims.create({
-        key: 'enemy_run',
+        key: 'enemy_walk',
         frames: this.scene.anims.generateFrameNumbers('enemy', { start: 80, end: 88 }),
         FrameRate: 8,
         repeat: -1
   
       })
+
       this.scene.anims.create({
-        key: 'enemy_Back',
-        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 39, end: 46 }),
+        key: 'enemy_slash',
+        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 20, end: 24 }),
         FrameRate: 8,
         repeat: -1
-  
       })
+
       this.scene.anims.create({
-        key: 'enemy_Front',
-        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 47, end: 54 }),
+        key: 'enemy_run',
+        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 90, end: 99 }),
         FrameRate: 8,
         repeat: -1
-  
+      })
+
+      this.scene.anims.create({
+        key: 'enemy_die',
+        frames: this.scene.anims.generateFrameNumbers('enemy', { start: 30, end: 35 }),
+        frameRate: 10,
+        repeat: 0
       })
       //-------- end-----------------
 
+      //enemyGroup.getChildren().forEach(function(this) {
+          this.body.setGravityY(700);
+          this.setCollideWorldBounds(true);
+          this.body.velocity.x = 50;
+          // game.rnd.integerInRange(125, 175) * game.rnd.sign();
+          this.stepCount = Phaser.Math.Between(0, stepLimit)
+          // game.rnd.integerInRange(0, stepLimit);
+          this.body.bounce.x = 1;
+      //});
 
-    //let player = this.physics.add.sprite(1410, 500, 'dude');
-    //console.log(start.x, start.y, "this is start")
-
-    this.body.setGravityY(700);
-    this.setCollideWorldBounds(true);
-
-    //this.body.setOffset(18, 13);
-    /////////////////////////////////////////////////////
-    //  // this weapon properties
-    //  thisWeapon = game.add.weapon(5, 'this-bullet');
-    //  thisWeapon.fireRate = 250;
-    //  thisWeapon.bulletSpeed = 400;
-    //  thisWeapon.bulletKillType = Phaser.Weapon.KILL_CAMERA_BOUNDS;
-
-    //  thisWeapon.onFire.add(function() {
-    //      thisFireSound.play();
-    //  });
-    this.body.velocity.x = 100;
-    // game.rnd.integerInRange(125, 175) * game.rnd.sign();
-    this.stepCount = 0
-    // game.rnd.integerInRange(0, stepLimit);
-
-    this.body.bounce.x = 1;
-    // platforms.setAll('body.immovable', true);
   }
-
-
-
+  
   // listens to events happening on the update  
 
   updateEvents() {
@@ -83,9 +73,7 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-  
-  
-  // thisGroup.forEachAlive(function (this) {
+    //enemyGroup.getChildren().forEach(function(this) {
         // increase this's step counter
         this.stepCount++;
         // check if this's step counter has reach limit
@@ -96,23 +84,17 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
             this.stepCount = 0;
             // can add other code - change this animation, etc.
         }
-      // });
+      
 
-
-
-  if (this.body.velocity.x > 1){
-    this.anims.play('enemy_run', true)
-    this.flipX = true
- }
- else if(this.body.velocity.x < -1){
-    this.anims.play('enemy_run', true)
-    this.flipX = false
- }
- else {
-   this.anims.play('enemy_idle', true)
- }
-//......................
-
-
-    }
+      if (this.body.velocity.x > 0){
+        this.flipX = true
+      }
+      else if(this.body.velocity.x < 0){
+          this.flipX = false
+      }
+      else {
+        if(enemySituation == 1)this.anims.play('enemy_idle', true);
+      }
+    // });
+  }
 }
