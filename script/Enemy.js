@@ -83,36 +83,35 @@ class Enemy extends Phaser.Physics.Arcade.Sprite {
   }
 
   update() {
-  
-  if(allowControls && this.body) {
-    // thisGroup.forEachAlive(function (this) {
-          // increase this's step counter
-          this.stepCount++;
-          // check if this's step counter has reach limit
-          if (this.stepCount > stepLimit) {
-              // reverse this direction
-              this.body.velocity.x *= -1;
-              // reset this's step counter
-              this.stepCount = 0;
-              // can add other code - change this animation, etc.
-          }
-        // });
+    if(allowControls && this.body) {
+      // thisGroup.forEachAlive(function (this) {
+            // increase this's step counter
+            this.stepCount++;
+            // check if this's step counter has reach limit
+            if (this.stepCount > stepLimit) {
+                // reverse this direction
+                this.body.velocity.x *= -1;
+                // reset this's step counter
+                this.stepCount = 0;
+                // can add other code - change this animation, etc.
+            }
+          // });
 
 
 
-      if (this.body.velocity.x > 1){
-        this.anims.play('enemy_run', true)
-        this.flipX = true
+        if (this.body.velocity.x > 1){
+          this.anims.play('enemy_run', true)
+          this.flipX = true
+      }
+      else if(this.body.velocity.x < -1){
+          this.anims.play('enemy_run', true)
+          this.flipX = false
+      }
+      else {
+        this.anims.play('enemy_idle', true)
+      }
+      //......................
+
     }
-    else if(this.body.velocity.x < -1){
-        this.anims.play('enemy_run', true)
-        this.flipX = false
-    }
-    else {
-      this.anims.play('enemy_idle', true)
-    }
-    //......................
-
   }
-    }
 }

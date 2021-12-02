@@ -25,6 +25,77 @@
          "y":0
         }, 
         {
+         "draworder":"topdown",
+         "id":8,
+         "name":"enemies",
+         "objects":[
+                {
+                 "height":0,
+                 "id":58,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":462.022582834578,
+                 "y":667.365952983279
+                }, 
+                {
+                 "height":0,
+                 "id":59,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":841.118035416795,
+                 "y":598.260011106312
+                }, 
+                {
+                 "height":0,
+                 "id":60,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":862.837045720985,
+                 "y":229.03683593509
+                }, 
+                {
+                 "height":0,
+                 "id":61,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":179.675448880114,
+                 "y":280.372678472265
+                }, 
+                {
+                 "height":0,
+                 "id":62,
+                 "name":"",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1528.22854322206,
+                 "y":450.175849941383
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
          "compression":"",
          "data":"rgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMCuAgAAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAALwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwDAvAMAwLwDAMC8AwAAvAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvAMAAK4CAAC8AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC8AwAArgIAALwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1wMAANcDAADXAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADXAwAA1wMAANcDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAC8AwCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAALwDAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAAvAMAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAC8AwCgAAAAAAAAAAAAAAAAAAAAAAAAAADXAwAA1wMAANcDAADXAwAA1wMAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwDAACuAgAAAAAAAK4CAAC8AwAAAAAAAAAAAADXAwAA1wMAANcDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvAMAAK4CAAAAAAAArgIAALwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC8AwAArgIAAAAAAACuAgAAvAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwDAACuAgAAAAAAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANcDAADXAwAA1wMAANcDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvAMAAK4CAAAAAAAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC8AwAArgIAAAAAAACuAgAA1wMAANcDAADXAwAA1wMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALwDAACuAgAAAAAAAK4CAAC8AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvAMAAK4CAAAAAAAArgIAALwDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAACuAgAAvAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAAAAAAAK4CAAC8AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAAAAAAAArgIAAK4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACiAAAAowAAAK4CAAAAAAAAsQIAAAAAAAAAAAAAAAAAALECAAAAAAAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAAAAAAAAAAAArgIAAAAAAADwAQAAAAAAAAAAAAAAAAAAAAAAAMIAAADDAAAArgIAAAAAAADRAgAAAAAAAAAAAAAAAAAA0QIAAAAAAACuAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAK4CAACuAgAArgIAAK4CAACuAgAAAAAAAAAAAACuAgAArgIAAK4CAACuAgAArgIAAK4CAACuAgAA4gAAAOMAAAAAAAAArgIAAK4CAACuAgAArgIAAK4CAACuAgAArgIAAK4CAAA=",
          "encoding":"base64",
@@ -44,7 +115,7 @@
          "name":"collectable",
          "objects":[
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":9,
                  "name":"",
@@ -56,7 +127,7 @@
                  "y":610.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":10,
                  "name":"",
@@ -68,7 +139,7 @@
                  "y":612
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":11,
                  "name":"",
@@ -80,7 +151,7 @@
                  "y":328
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":12,
                  "name":"",
@@ -92,7 +163,7 @@
                  "y":326.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":13,
                  "name":"",
@@ -104,7 +175,7 @@
                  "y":166
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":14,
                  "name":"",
@@ -116,7 +187,7 @@
                  "y":164.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":16,
                  "name":"",
@@ -128,7 +199,7 @@
                  "y":167.333333333334
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":17,
                  "name":"",
@@ -140,7 +211,7 @@
                  "y":247.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":18,
                  "name":"",
@@ -152,7 +223,7 @@
                  "y":78.3333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":19,
                  "name":"",
@@ -164,7 +235,7 @@
                  "y":79.3333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":20,
                  "name":"",
@@ -176,7 +247,7 @@
                  "y":212.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":21,
                  "name":"",
@@ -188,7 +259,7 @@
                  "y":494.666666666666
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":22,
                  "name":"",
@@ -200,7 +271,7 @@
                  "y":494.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":23,
                  "name":"",
@@ -212,7 +283,7 @@
                  "y":117.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":24,
                  "name":"",
@@ -224,7 +295,7 @@
                  "y":113.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":25,
                  "name":"",
@@ -236,7 +307,7 @@
                  "y":738.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":26,
                  "name":"",
@@ -248,7 +319,7 @@
                  "y":336.333333333333
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":27,
                  "name":"",
@@ -260,7 +331,7 @@
                  "y":394.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":28,
                  "name":"",
@@ -272,7 +343,7 @@
                  "y":766.666666666667
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":29,
                  "name":"",
@@ -284,7 +355,7 @@
                  "y":520
                 }, 
                 {
-                 "gid":1025,
+                 "gid":984,
                  "height":32,
                  "id":35,
                  "name":"",
@@ -330,7 +401,7 @@
          "name":"door",
          "objects":[
                 {
-                 "gid":1027,
+                 "gid":986,
                  "height":39,
                  "id":57,
                  "name":"",
@@ -353,7 +424,7 @@
          "name":"keys",
          "objects":[
                 {
-                 "gid":1026,
+                 "gid":985,
                  "height":32,
                  "id":42,
                  "name":"",
@@ -365,7 +436,7 @@
                  "y":309
                 }, 
                 {
-                 "gid":1026,
+                 "gid":985,
                  "height":32,
                  "id":44,
                  "name":"",
@@ -382,8 +453,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":8,
- "nextobjectid":58,
+ "nextlayerid":9,
+ "nextobjectid":63,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.2",
@@ -398,13 +469,13 @@
          "margin":0,
          "name":"tileset",
          "spacing":0,
-         "tilecount":1024,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }, 
         {
          "columns":0,
-         "firstgid":1025,
+         "firstgid":984,
          "grid":
             {
              "height":1,
@@ -420,27 +491,27 @@
                 {
                  "id":0,
                  "image":"..\/dungeoun\/dimond.png",
-                 "imageheight":24,
-                 "imagewidth":23
+                 "imageheight":18,
+                 "imagewidth":31
                 }],
          "tilewidth":32
         }, 
         {
          "columns":1,
-         "firstgid":1026,
+         "firstgid":985,
          "image":"..\/..\/..\/..\/Downloads\/key.png",
          "imageheight":32,
          "imagewidth":37,
          "margin":0,
          "name":"key",
          "spacing":0,
-         "tilecount":1,
+         "tilecount":0,
          "tileheight":32,
          "tilewidth":32
         }, 
         {
          "columns":0,
-         "firstgid":1027,
+         "firstgid":986,
          "grid":
             {
              "height":1,
@@ -455,9 +526,7 @@
          "tiles":[
                 {
                  "id":0,
-                 "image":"..\/..\/..\/..\/Downloads\/lockdoorr.png",
-                 "imageheight":91,
-                 "imagewidth":60
+                 "image":"..\/..\/..\/..\/Downloads\/lockdoorr.png"
                 }],
          "tilewidth":60
         }],

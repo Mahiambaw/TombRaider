@@ -2,7 +2,7 @@
 let player;
 let mapName;
 let map;
-let enemy;
+//let enemy;
 let damageCheck = false;
 let scoreText;
 let key = 0;
@@ -12,6 +12,8 @@ let keyText;
 let doorText;
 let step;
 let soundInterval = false;
+let enemyGroup;
+let collectable;
 
 class Background extends Phaser.Scene {
 
@@ -36,6 +38,8 @@ class Background extends Phaser.Scene {
     this.load.image('door', './assets/level2/lockdoorr.png')
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
+
+    enemyGroup = this.add.group();
     
     //-----------SOUNDS---------------
     this.load.audio('step', './assets/sounds/dirt_run3.ogg');
@@ -43,8 +47,6 @@ class Background extends Phaser.Scene {
     this.load.audio('hurt', './assets/sounds/lose.wav');
     this.load.audio('keypickup', './assets/sounds/win.wav');
     this.load.audio('coinpickup', './assets/sounds/coin.wav');
-
-    
     //-----------ENDSOUNDS-------------
   }
 
@@ -57,8 +59,9 @@ class Background extends Phaser.Scene {
     step = this.sound.add('step');
 
     let layers = this.creatLayer(map);
-    let playerZone = this.getplayerZone
-      (layers.playerZone)
+    let playerZone = this.getplayerZone(layers.playerZone)
+    let enemySpawn = layers.enemyLayer;
+    console.log(enemySpawn);
     // from playerZone  it gets x and y value of the object spesfied in the tile map 
     let x = playerZone.start.x;
     let y = playerZone.start.y;
@@ -66,12 +69,17 @@ class Background extends Phaser.Scene {
     // const collecLayer = this.getCollectable(layers.collectLayer)
     player = new Player(this, x, y);
     //for each enemy object create:
-    enemy = new Enemy(this, 700, 500);
+    //enemy = new Enemy(this, 700, 500);
     //with position from tiled8
 
+    enemySpawn.forEach((coordinates) => {
+      enemyGroup.add(new Enemy(this, coordinates.x, coordinates.y));
+    })
+      
+
     this.physics.add.collider(player, layers.platforms)
-    this.physics.add.collider(enemy, layers.platforms)
-    this.physics.add.overlap(player, enemy, this.takeDamage, null, this)
+    this.physics.add.collider(enemyGroup, layers.platforms)
+    enemyGroup.getChildren().forEach((enemy) => {this.physics.add.overlap(player, enemy, () => {this.takeDamage(enemy)}, null, this)})
 
 
 
@@ -97,7 +105,7 @@ class Background extends Phaser.Scene {
       repeat: -1
     });
 
-    const collectable = this.getCollectable(layers.collectLayer);
+    collectable = this.getCollectable(layers.collectLayer);
 
     this.physics.add.overlap(player, collectable, this.oncollect)
     this.endOfLevel(playerZone.end, player);
@@ -136,7 +144,7 @@ class Background extends Phaser.Scene {
       console.log(player.body)
       animCheck = false;
       player.destroy();
-      enemy.destroy();
+      enemyGroup.getChildren().forEach((enemy) => {enemy.destroy()});
       console.log(player);
       this.scene.restart();// restart current scene
       console.log(player.body)  
@@ -159,6 +167,8 @@ class Background extends Phaser.Scene {
   destroyMap() {
     this.physics.world.colliders.destroy();
     map.destroy();
+    enemyGroup.getChildren().forEach((enemy) => {enemy.destroy()})
+    collectable.getChildren().forEach((collect) => {collect.destroy()})
 
   }
 
@@ -168,20 +178,21 @@ class Background extends Phaser.Scene {
     mapName = "map2";
     map = this.creatMap(mapName);
     let layers = this.creatLayer(map);
-    let playerZone = this.getplayerZone
-      (layers.playerZone)
+    let playerZone = this.getplayerZone(layers.playerZone)
+    let enemySpawn = layers.enemyLayer;
     // from playerZone  it gets x and y value of the object spesfied in the tile map 
     let x = playerZone.start.x;
     let y = playerZone.start.y;
     player.x = x;
     player.y = y;
 
-    enemy.x = x
-    enemy.y = y
+    enemySpawn.forEach((coordinates) => {
+      enemyGroup.add(new Enemy(this, coordinates.x, coordinates.y));
+    })
 
     this.physics.world.setBounds(0, 0, 3200, 1600);
     this.physics.add.collider(player, layers.platforms)
-    this.physics.add.collider(enemy, layers.platforms)
+    enemyGroup.getChildren().forEach((enemy) => {this.physics.add.collider(enemy, layers.platforms)})
     // gets the collectable object and display it 
 
     let doorLayer = this.getDoorLayer(layers.doorLayer)
@@ -213,6 +224,7 @@ class Background extends Phaser.Scene {
     const collectLayer = map.getObjectLayer('collectable')['objects'];
     const keyLayer = map.getObjectLayer('keys').objects
     const doorLayer = map.getObjectLayer('door').objects
+    const enemyLayer = map.getObjectLayer('enemies').objects;
     platforms.setCollisionByExclusion(-1, true);
 
 
@@ -222,7 +234,8 @@ class Background extends Phaser.Scene {
       playerZone,
       collectLayer,
       doorLayer,
-      keyLayer
+      keyLayer,
+      enemyLayer
     }
   }
 
@@ -263,7 +276,7 @@ class Background extends Phaser.Scene {
   oncollect(player, collectable) {
 
 
-    collectable.disableBody(true, true)
+    collectable.destroy();
     score += 10;
 
     scoreText.setText('Score: ' + score);
@@ -350,18 +363,17 @@ class Background extends Phaser.Scene {
   }
 
 
-  takeDamage() {
+  takeDamage(enemy) {
+    console.log("got hit")
     if(player.alpha == 1 && enemy.active) {
       player.hb.decrease(50);
       if(player.hb.value == 0) {
-        console.log(player.body)
         player.anims.play("death");
         animCheck = true;
         allowControls = false;
-        enemy.active = false;
-        enemy.alpha = 0;
+        /*enemy.active = false;
+        enemy.alpha = 0;*/
         player.setVelocityX(0);
-        console.log(player.body)
         this.cameras.main.fade(2000, "#ffffff");
       }
       else {
@@ -384,50 +396,53 @@ class Background extends Phaser.Scene {
       if (player.body.velocity.x != 0 && player.body.velocity.y == 0 && !soundInterval) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
       if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 
-      if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
-        enemy.setActive(false).setVisible(false);
-      }
+      enemyGroup.getChildren().forEach((enemy) => {
+        if (Phaser.Geom.Intersects.RectangleToRectangle(enemy.getBounds(), box.getBounds()) && box.active) {
+          enemy.setActive(false).setVisible(false);
+        }
 
-      // see if this and player within 400px of each other
-      if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
+        // see if this and player within 400px of each other
+        if (enemy && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300 && Phaser.Math.Distance.Between(null, player.y, null, enemy.y) < 100) {
 
-        // if player to left of this AND this moving to right (or not moving)
-        if (enemy.body.velocity.x >= 0) {
-          if (player.x < enemy.x) {
-            // move this to left
-            enemy.body.velocity.x = -150;
+          // if player to left of this AND this moving to right (or not moving)
+          if (enemy.body.velocity.x >= 0) {
+            if (player.x < enemy.x) {
+              // move this to left
+              enemy.body.velocity.x = -150;
+            }
+          }
+          // if player to right of this AND this moving to left (or not moving)
+          else if (enemy.body.velocity.x <= 0) {
+            if (player.x > enemy.x) {
+              // move this to right
+              enemy.body.velocity.x = 150;
+            }
           }
         }
-        // if player to right of this AND this moving to left (or not moving)
-        else if (enemy.body.velocity.x <= 0) {
-          if (player.x > enemy.x) {
+
+        // thisGroup.forEachAlive(function (this) {
+        // if bottom positions equal (could be on same platform) AND player within 300px
+        if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
+          // if player to left of this AND this moving to right
+          if (player.x < enemy.x && enemy.body.velocity.x > 0) {
+            // move this to left            
+            enemy.body.velocity.x *= -1; // reverse direction
+            // or could set directly: this.body.velocity.x = -150;        
+            // could add other code - change this animation, make this fire weapon, etc.
+
+          }
+          // if player to right of this AND this moving to left
+          else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
             // move this to right
-            enemy.body.velocity.x = 150;
+            enemy.body.velocity.x *= -1; // reverse direction
+            // or could set directly: this.body.velocity.x = 150;
+            // could add other code - change this animation, make this fire weapon, etc.
+
           }
         }
-      }
-
-      // thisGroup.forEachAlive(function (this) {
-      // if bottom positions equal (could be on same platform) AND player within 300px
-      if (enemy && player.y == enemy.y && Phaser.Math.Distance.Between(player.x, null, enemy.x, null) < 300) {
-        // if player to left of this AND this moving to right
-        if (player.x < enemy.x && enemy.body.velocity.x > 0) {
-          // move this to left            
-          enemy.body.velocity.x *= -1; // reverse direction
-          // or could set directly: this.body.velocity.x = -150;        
-          // could add other code - change this animation, make this fire weapon, etc.
-
-        }
-        // if player to right of this AND this moving to left
-        else if (player.x > enemy.x && enemy.body.velocity.x < 0) {
-          // move this to right
-          enemy.body.velocity.x *= -1; // reverse direction
-          // or could set directly: this.body.velocity.x = 150;
-          // could add other code - change this animation, make this fire weapon, etc.
-
-        }
-      }
+      });
     }
+    
     // });
 
     if (testLet == 0) console.log(this.player + "update");
