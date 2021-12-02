@@ -95,18 +95,6 @@
                  "width":0,
                  "x":906.275066329364,
                  "y":454.124760905781
-                }, 
-                {
-                 "height":0,
-                 "id":100,
-                 "name":"1",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":1429.50576911211,
-                 "y":477.81822669217
                 }],
          "opacity":1,
          "type":"objectgroup",

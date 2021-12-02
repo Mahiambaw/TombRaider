@@ -24,6 +24,7 @@ let allowControls = false;
 let doorOpen;
 let slash;
 let ost;
+let mapNr = 1;
 
 
 
@@ -48,8 +49,9 @@ class Background extends Phaser.Scene {
 
     this.load.image('key', './assets/level2/key.png')
     this.load.image('door', './assets/level2/lockdoorr.png')
-    this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
-    this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
+    this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json');
+    this.load.tilemapTiledJSON('map2', './assets/level2/cave.json');
+    this.load.tilemapTiledJSON('map3', './assets/dungeoun/level3.json');
 
     if(menuCheck) menu = this.scene.add('menu', Menu, true);
 
@@ -133,6 +135,7 @@ class Background extends Phaser.Scene {
     });
 
     collectable = this.getCollectable(layers.collectLayer);
+    console.log(collectable)
 
     this.physics.add.overlap(player, collectable, this.oncollect)
     this.endOfLevel(playerZone.end, player);
@@ -192,17 +195,20 @@ class Background extends Phaser.Scene {
   }
 
   destroyMap() {
+    collectable.getChildren().forEach((collect) => {collect.destroy()})
     this.physics.world.colliders.destroy();
     map.destroy();
     enemyGroup.getChildren().forEach((enemy) => {enemy.destroy()})
-    collectable.getChildren().forEach((collect) => {collect.destroy()})
+    console.log(collectable.getChildren());
+    
 
   }
 
   levelChange() {
     this.scene.pause();
     this.destroyMap();
-    mapName = "map2";
+    mapNr++;
+    mapName = "map" + mapNr;
     map = this.creatMap(mapName);
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone(layers.playerZone)
@@ -223,14 +229,17 @@ class Background extends Phaser.Scene {
     // gets the collectable object and display it 
 
     let doorLayer = this.getDoorLayer(layers.doorLayer)
-    const collectable = this.getCollectable(layers.collectLayer);
+    let collectable = this.getCollectable(layers.collectLayer);
     const collectKey = this.addkeys(layers.keyLayer)
-    const collectDoor = this.adddoor(doorLayer.door)
+    console.log(this.adddoor(doorLayer.door));
+    let collectDoor = this.adddoor(doorLayer.door);
 
     this.physics.add.overlap(player, collectable, this.oncollect)
 
     this.physics.add.overlap(player, collectKey, this.keyCollect)
-    this.physics.add.collider(player, collectDoor, this.doorCollect)
+    this.physics.add.collider(player, collectDoor, () => {this.doorCollect(player, collectDoor);})
+
+    this.endOfLevel(playerZone.end, player);
 
     this.scene.resume();
     player.anims.play('idle');
@@ -252,7 +261,7 @@ class Background extends Phaser.Scene {
     const playerZone = map.getObjectLayer('player_Zone').objects;
     const collectLayer = map.getObjectLayer('collectable')['objects'];
     const keyLayer = map.getObjectLayer('keys').objects
-    const doorLayer = map.getObjectLayer('door').objects
+    let doorLayer = map.getObjectLayer('door').objects
     const enemyLayer = map.getObjectLayer('enemies').objects;
     platforms.setCollisionByExclusion(-1, true);
 
@@ -273,7 +282,7 @@ class Background extends Phaser.Scene {
   // creat the each of the collectable object x and y value 
   // retrun the value of the collectable  object 
   getCollectable(collectableLayer) {
-    const collectables = this.physics.add.staticGroup();
+    let collectables = this.physics.add.staticGroup();
     collectableLayer.forEach((collect) => {
       collectables.get(collect.x, collect.y, 'dimond')
 
@@ -321,8 +330,13 @@ class Background extends Phaser.Scene {
   doorCollect(player, doorLayer) {
     if (key == 2 && key != 0) {
       console.log(" all keyes have been collected")
+      console.log(doorLayer)
+      doorLayer.alpha = 0;
       doorLayer.destroy();
+      
       doorOpen.play();
+      key = 0;
+      keyText.setText('Key: ' + key);
 
     }
     else {
