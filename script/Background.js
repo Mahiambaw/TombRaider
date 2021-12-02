@@ -145,6 +145,8 @@ class Background extends Phaser.Scene {
 
   levelChange() {
     this.scene.pause();
+    enemyGroup.getChildren().forEach(function(enemy) {    
+      enemy.destroy(); })
     this.destroyMap();
     mapName = "map2";
     map = this.creatMap(mapName);
