@@ -16,8 +16,14 @@ let enemyGroup;
 let collectable;
 let hurt;
 let keypickup;
+let coinpickup;
 let deathSound;
 let menu;
+let menuCheck = true;
+let allowControls = false;
+let doorOpen;
+let slash;
+let ost;
 
 
 
@@ -45,21 +51,26 @@ class Background extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json')
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json')
 
+    if(menuCheck) menu = this.scene.add('menu', Menu, true);
+
     enemyGroup = this.add.group();
     
     //-----------SOUNDS---------------
+    this.load.audio('ost', './assets/sounds/OST.mp3')
     this.load.audio('step', './assets/sounds/dirt_run3.ogg');
     this.load.audio('dmg', './assets/sounds/hurt.wav');
     this.load.audio('deathsound', './assets/sounds/death.wav');
     this.load.audio('keypickup', './assets/sounds/win.wav');
-    this.load.audio('coinpickup', './assets/sounds/coin.wav');
+    this.load.audio('coinpickup', './assets/sounds/coin.ogg');
+    this.load.audio('dooropen', './assets/sounds/dooropen.wav');
+    this.load.audio('slash', 'assets/sounds/slash.wav');
 
     //-----------ENDSOUNDS-------------
   }
 
   create() {
     console.log("background create")
-    //allowControls = true;
+    if(!menuCheck)allowControls = true;
     mapName = "map"
     map = this.creatMap(mapName);
 
@@ -67,6 +78,10 @@ class Background extends Phaser.Scene {
     hurt = this.sound.add('dmg');
     deathSound = this.sound.add('deathsound');
     step = this.sound.add('step');
+    doorOpen = this.sound.add('dooropen');
+    slash = this.sound.add('slash');
+    coinpickup = this.sound.add('coinpickup');
+    ost = this.sound.add('ost', {volume: 0.5, loop: true});
 
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone(layers.playerZone)
@@ -86,7 +101,7 @@ class Background extends Phaser.Scene {
       enemyGroup.add(new Enemy(this, coordinates.x, coordinates.y));
     })
 
-    menu = this.scene.add('menu', Menu, true)
+    
       
 
     this.physics.add.collider(player, layers.platforms)
@@ -218,6 +233,7 @@ class Background extends Phaser.Scene {
     this.physics.add.collider(player, collectDoor, this.doorCollect)
 
     this.scene.resume();
+    player.anims.play('idle');
     allowControls = true;
   }
 
@@ -289,6 +305,7 @@ class Background extends Phaser.Scene {
   oncollect(player, collectable) {
     collectable.destroy();
     score += 10;
+    coinpickup.play();
 
     scoreText.setText('Score: ' + score);
 
@@ -305,6 +322,7 @@ class Background extends Phaser.Scene {
     if (key == 2 && key != 0) {
       console.log(" all keyes have been collected")
       doorLayer.destroy();
+      doorOpen.play();
 
     }
     else {
@@ -376,8 +394,8 @@ class Background extends Phaser.Scene {
 
 
   takeDamage(enemy) {
-    console.log("got hit")
-    if(player.alpha == 1 && enemy.active) {
+    
+    if(player.alpha == 1 && enemy.active && enemy.alpha == 1) {
       player.hb.decrease(50);
       if(player.hb.value == 0) {
         deathSound.play();
@@ -388,6 +406,7 @@ class Background extends Phaser.Scene {
         enemy.alpha = 0;*/
         player.setVelocityX(0);
         this.cameras.main.fade(2000, "#ffffff");
+        console.log("got hit")
       }
       else {
         hurt.play();
@@ -418,8 +437,10 @@ class Background extends Phaser.Scene {
           enemy.enemySituation = 0;
           enemy.anims.play('enemy_die', true)
           enemy.setVelocity(0);
-          setTimeout(() => {enemy.setActive(false).setVisible(false)}, 2000)
+          enemy.alpha = 0.9;
+          setTimeout(() => {enemy.destroy()}, 1500)
           // enemy.setActive(false).setVisible(false);
+          slash.play();
         }
         
         if (enemy.enemySituation == 1) {
@@ -455,7 +476,7 @@ class Background extends Phaser.Scene {
     }
     
   
-  else { 
+  else if(!allowControls && menuCheck) { 
       player.anims.play('idle', true);
       enemyGroup.getChildren().forEach((enemy) => {
         enemy.anims.play('enemy_idle', true)

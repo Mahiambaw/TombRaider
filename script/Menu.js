@@ -90,13 +90,15 @@ class Menu extends Phaser.Scene {
         })
         
         startButton.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN ,() => {
-            allowControls = true 
+            allowControls = true;
+            menuCheck = false;
             startButton.visible = false;
             this.startText.visible = false;
             helpButton.visible = false;
             this.helpText.visible = false;
             quitButton.visible = false;
             this.quitText.visible = false;
+            ost.play();
             enemyGroup.getChildren().forEach((enemy) => {
               // enemy.anims.play('enemy_idle', true)
               // enemyIdle  = true;
