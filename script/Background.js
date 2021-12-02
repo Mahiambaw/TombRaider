@@ -401,8 +401,8 @@ class Background extends Phaser.Scene {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-      //if (player.body.velocity.x != 0 && player.body.onFloor() && !soundInterval && !animCheck) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
-      //else if (player.body.velocity.x == 0 || !player.body.onFloor() || animCheck) {step.pause()}
+      if (player.body.velocity.x != 0 && player.body.onFloor() && !soundInterval && !animCheck) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
+      else if (player.body.velocity.x == 0 || !player.body.onFloor() || animCheck) {step.pause()}
       if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 
       enemyGroup.getChildren().forEach((enemy) => {
