@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
   init() {
+
     this.gravity = 700;
     this.jumpCount = 0;
     this.nextJumps = 1;
@@ -35,7 +36,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // creat animation 
     this.cursors = this.scene.input.keyboard.createCursorKeys();
     this.space = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.ctrl = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL);
+    this.ctrl = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    
     //ONLY SINGLE PRESS NOT HOLD
     // adding a box
 
