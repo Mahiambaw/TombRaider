@@ -24,7 +24,10 @@ let allowControls = false;
 let doorOpen;
 let slash;
 let ost;
-let mapNr = 1;
+let mapNr = 3;
+let collectableNumberOfEntries;
+let enemiesNumberOfEntries;
+let collectDoor;
 
 
 
@@ -52,13 +55,14 @@ class Background extends Phaser.Scene {
     this.load.tilemapTiledJSON('map', './assets/dungeoun/level1.json');
     this.load.tilemapTiledJSON('map2', './assets/level2/cave.json');
     this.load.tilemapTiledJSON('map3', './assets/dungeoun/level3.json');
+    this.load.tilemapTiledJSON('map4', './assets/dungeoun/level4.json');
 
     if(menuCheck) menu = this.scene.add('menu', Menu, true);
 
     enemyGroup = this.add.group();
     
     //-----------SOUNDS---------------
-    this.load.audio('ost', './assets/sounds/OST.mp3')
+    this.load.audio('ost', './assets/sounds/ost.mp3');
     this.load.audio('step', './assets/sounds/dirt_run3.ogg');
     this.load.audio('dmg', './assets/sounds/hurt.wav');
     this.load.audio('deathsound', './assets/sounds/death.wav');
@@ -135,7 +139,7 @@ class Background extends Phaser.Scene {
     });
 
     collectable = this.getCollectable(layers.collectLayer);
-    console.log(collectable)
+    
 
     this.physics.add.overlap(player, collectable, this.oncollect)
     this.endOfLevel(playerZone.end, player);
@@ -145,7 +149,7 @@ class Background extends Phaser.Scene {
 
     // animaition for dimond
 
-
+    
 
     // ----------------score ------------
     // --------------- Adding Scroe----
@@ -174,12 +178,14 @@ class Background extends Phaser.Scene {
       console.log(player.body)
       animCheck = false;
       player.destroy();
-      enemyGroup.getChildren().forEach((enemy) => {enemy.destroy()});
+      enemyGroup.getChildren().forEach((enemy) => {enemy.destroy();});
       console.log(player);
       this.scene.restart();// restart current scene
       console.log(player.body)  
   
     }, this);
+
+    collectableNumberOfEntries = collectable.children.entries.length;
 
   }
 
@@ -195,11 +201,22 @@ class Background extends Phaser.Scene {
   }
 
   destroyMap() {
-    collectable.getChildren().forEach((collect) => {collect.destroy()})
+    
     this.physics.world.colliders.destroy();
     map.destroy();
-    enemyGroup.getChildren().forEach((enemy) => {enemy.destroy()})
-    console.log(collectable.getChildren());
+    //enemyGroup.getChildren().forEach((enemy) => {enemy.destroy();  console.log("times enemies die")})
+    enemiesNumberOfEntries = enemyGroup.children.entries.length;
+    for (var i = enemiesNumberOfEntries - 1; i >= 0; i--) {
+      enemyGroup.children.entries[i].destroy();
+      console.log("destroy enemy")
+    }
+    console.log(collectable.children.entries.length);
+    collectableNumberOfEntries = collectable.children.entries.length;
+    //collectable.getChildren().forEach((collect) => {collect.destroy(); console.log("destroy collectable")})
+    for (var i = collectableNumberOfEntries-1; i >= 0 ; i--) {
+      collectable.children.entries[i].destroy();
+      console.log("destroy entrie")
+    }
     
 
   }
@@ -223,27 +240,29 @@ class Background extends Phaser.Scene {
       enemyGroup.add(new Enemy(this, coordinates.x, coordinates.y));
     })
 
-    this.physics.world.setBounds(0, 0, 3200, 1600);
+    if(mapNr == 2) this.physics.world.setBounds(0, 0, 3200, 1600);
+    if(mapNr == 3 || mapNr == 4) this.physics.world.setBounds(0, 0, 4800, 1600);
     this.physics.add.collider(player, layers.platforms)
     enemyGroup.getChildren().forEach((enemy) => {this.physics.add.collider(enemy, layers.platforms); this.physics.add.overlap(player, enemy, () => {this.takeDamage(enemy)}, null, this)})
     // gets the collectable object and display it 
 
     let doorLayer = this.getDoorLayer(layers.doorLayer)
-    let collectable = this.getCollectable(layers.collectLayer);
+    collectable = this.getCollectable(layers.collectLayer);
     const collectKey = this.addkeys(layers.keyLayer)
-    console.log(this.adddoor(doorLayer.door));
-    let collectDoor = this.adddoor(doorLayer.door);
+    collectDoor = this.adddoor(doorLayer.door);
+    console.log(collectDoor + "1");
 
     this.physics.add.overlap(player, collectable, this.oncollect)
 
     this.physics.add.overlap(player, collectKey, this.keyCollect)
-    this.physics.add.collider(player, collectDoor, () => {this.doorCollect(player, collectDoor);})
+    this.physics.add.collider(player, collectDoor, this.doorCollect);
 
     this.endOfLevel(playerZone.end, player);
 
     this.scene.resume();
     player.anims.play('idle');
     allowControls = true;
+    console.log(collectDoor + "2");
   }
 
   // creat a  layer function 
@@ -286,9 +305,10 @@ class Background extends Phaser.Scene {
     collectableLayer.forEach((collect) => {
       collectables.get(collect.x, collect.y, 'dimond')
 
-
     })
 
+    console.log(collectables + "inside get")
+    
     collectables.playAnimation('shine')
 
     return collectables
@@ -301,9 +321,11 @@ class Background extends Phaser.Scene {
     return keys
   }
   adddoor(doorLayer) {
-    const doors = this.physics.add.sprite(doorLayer.x, doorLayer.y, "door");
+    let doors = this.physics.add.sprite(doorLayer.x, doorLayer.y, "door");
     doors.body.allowGravity = false;
     doors.setImmovable(true)
+
+    console.log(doors + "cccc");
 
     return doors
 
@@ -327,13 +349,12 @@ class Background extends Phaser.Scene {
     keyText.visible = true;
 
   }
-  doorCollect(player, doorLayer) {
+  doorCollect() {
     if (key == 2 && key != 0) {
       console.log(" all keyes have been collected")
-      console.log(doorLayer)
-      doorLayer.alpha = 0;
-      doorLayer.destroy();
-      
+      console.log(collectDoor + "before")
+      collectDoor.destroy();
+      console.log(collectDoor + "after")
       doorOpen.play();
       key = 0;
       keyText.setText('Key: ' + key);
@@ -388,7 +409,6 @@ class Background extends Phaser.Scene {
     const endLap = this.physics.add.overlap(player, endLevel, () => {
 
       endLap.active = false;
-
       this.levelChange();
 
       console.log("Hello")
@@ -410,8 +430,9 @@ class Background extends Phaser.Scene {
   takeDamage(enemy) {
     
     if(player.alpha == 1 && enemy.active && enemy.alpha == 1) {
-      player.hb.decrease(50);
+      player.hb.decrease(25);
       if(player.hb.value == 0) {
+        mapNr = 1;
         deathSound.play();
         player.anims.play("death");
         animCheck = true;
@@ -436,8 +457,17 @@ class Background extends Phaser.Scene {
 
 
   update() {
-
-
+    if(player.y > 800 && allowControls) {
+      deathSound.play();
+        player.anims.play("death");
+        animCheck = true;
+        allowControls = false;
+        /*enemy.active = false;
+        enemy.alpha = 0;*/
+        player.setVelocityX(0);
+        this.cameras.main.fade(2000, "#ffffff");
+        console.log("got hit")
+    }
     if(allowControls) {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
@@ -486,6 +516,7 @@ class Background extends Phaser.Scene {
             enemy.anims.play('enemy_walk', true)
           }
         }
+        if(enemy.y > 800) { enemy.destroy()}
       });
     }
     

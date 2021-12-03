@@ -26,13 +26,7 @@
   </data>
  </layer>
  <objectgroup id="7" name="enemies">
-  <object id="24" x="606" y="466">
-   <point/>
-  </object>
-  <object id="27" x="1042" y="409">
-   <point/>
-  </object>
-  <object id="28" x="1790" y="440">
+  <object id="24" x="430" y="464.667">
    <point/>
   </object>
   <object id="29" x="2115" y="340">
@@ -56,7 +50,7 @@
   <object id="35" gid="1026" x="2578" y="513.333" width="37" height="32"/>
  </objectgroup>
  <objectgroup id="3" name="door">
-  <object id="36" gid="1027" x="2674" y="254" width="60" height="91"/>
+  <object id="36" gid="1027" x="2676.67" y="236.667" width="60" height="91"/>
  </objectgroup>
  <objectgroup id="4" name="player_Zone">
   <object id="1" name="startZone" x="72" y="528">

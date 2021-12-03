@@ -43,7 +43,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     box = this.scene.add.rectangle(null, null, 30, 30, 0xffffff)
     box.active = false;
     //this.scene.add.existing(box);
-    box.alpha = 0.2;
+    box.alpha = 0;
     //------------ end ---------------------
 
     // scene creation for the player 
