@@ -55,7 +55,6 @@ class HealthBar {
     this.value -= amount;
     if (this.value == 0) {
       this.value = 0;
-      console.log("dead");
     }
     else {
       this.draw(this.x, this.y, this.scale)

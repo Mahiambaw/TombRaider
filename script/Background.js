@@ -24,7 +24,7 @@ let allowControls = false;
 let doorOpen;
 let slash;
 let ost;
-let mapNr = 3;
+let mapNr = 1;
 let collectableNumberOfEntries;
 let enemiesNumberOfEntries;
 let collectDoor;
@@ -75,7 +75,6 @@ class Background extends Phaser.Scene {
   }
 
   create() {
-    console.log("background create")
     if(!menuCheck)allowControls = true;
     mapName = "map"
     map = this.creatMap(mapName);
@@ -92,7 +91,6 @@ class Background extends Phaser.Scene {
     let layers = this.creatLayer(map);
     let playerZone = this.getplayerZone(layers.playerZone)
     let enemySpawn = layers.enemyLayer;
-    console.log(enemySpawn);
     // from playerZone  it gets x and y value of the object spesfied in the tile map 
     let x = playerZone.start.x;
     let y = playerZone.start.y;
@@ -175,13 +173,10 @@ class Background extends Phaser.Scene {
     this.cameras.main.setZoom(2);
 
     this.cameras.main.on('camerafadeoutcomplete', function () {
-      console.log(player.body)
       animCheck = false;
       player.destroy();
       enemyGroup.getChildren().forEach((enemy) => {enemy.destroy();});
-      console.log(player);
       this.scene.restart();// restart current scene
-      console.log(player.body)  
   
     }, this);
 
@@ -208,14 +203,11 @@ class Background extends Phaser.Scene {
     enemiesNumberOfEntries = enemyGroup.children.entries.length;
     for (var i = enemiesNumberOfEntries - 1; i >= 0; i--) {
       enemyGroup.children.entries[i].destroy();
-      console.log("destroy enemy")
     }
-    console.log(collectable.children.entries.length);
     collectableNumberOfEntries = collectable.children.entries.length;
     //collectable.getChildren().forEach((collect) => {collect.destroy(); console.log("destroy collectable")})
     for (var i = collectableNumberOfEntries-1; i >= 0 ; i--) {
       collectable.children.entries[i].destroy();
-      console.log("destroy entrie")
     }
     
 
@@ -250,7 +242,6 @@ class Background extends Phaser.Scene {
     collectable = this.getCollectable(layers.collectLayer);
     const collectKey = this.addkeys(layers.keyLayer)
     collectDoor = this.adddoor(doorLayer.door);
-    console.log(collectDoor + "1");
 
     this.physics.add.overlap(player, collectable, this.oncollect)
 
@@ -262,7 +253,6 @@ class Background extends Phaser.Scene {
     this.scene.resume();
     player.anims.play('idle');
     allowControls = true;
-    console.log(collectDoor + "2");
   }
 
   // creat a  layer function 
@@ -307,7 +297,6 @@ class Background extends Phaser.Scene {
 
     })
 
-    console.log(collectables + "inside get")
     
     collectables.playAnimation('shine')
 
@@ -325,7 +314,6 @@ class Background extends Phaser.Scene {
     doors.body.allowGravity = false;
     doors.setImmovable(true)
 
-    console.log(doors + "cccc");
 
     return doors
 
@@ -351,10 +339,7 @@ class Background extends Phaser.Scene {
   }
   doorCollect() {
     if (key == 2 && key != 0) {
-      console.log(" all keyes have been collected")
-      console.log(collectDoor + "before")
       collectDoor.destroy();
-      console.log(collectDoor + "after")
       doorOpen.play();
       key = 0;
       keyText.setText('Key: ' + key);
@@ -411,7 +396,6 @@ class Background extends Phaser.Scene {
       endLap.active = false;
       this.levelChange();
 
-      console.log("Hello")
     })
     // this will stop any sort of gravity on that endlevel body 
 
@@ -441,7 +425,6 @@ class Background extends Phaser.Scene {
         enemy.alpha = 0;*/
         player.setVelocityX(0);
         this.cameras.main.fade(2000, "#ffffff");
-        console.log("got hit")
       }
       else {
         hurt.play();
@@ -466,13 +449,12 @@ class Background extends Phaser.Scene {
         enemy.alpha = 0;*/
         player.setVelocityX(0);
         this.cameras.main.fade(2000, "#ffffff");
-        console.log("got hit")
     }
     if(allowControls) {
       //WHEN THE PLAYER CLASS EXISTS MAKE THE CAMERA FOLLOW THE PLAYER (BUGFIX)
       if (this.player) this.cameras.main.startFollow(this.player, true, 0.5, 0.5);
 
-      if (player.body.velocity.x != 0 && player.body.onFloor() && !soundInterval && !animCheck) step.play(), soundInterval = setInterval(() => {step.play(), console.log("check")}, 300);
+      if (player.body.velocity.x != 0 && player.body.onFloor() && !soundInterval && !animCheck) step.play(), soundInterval = setInterval(() => {step.play()}, 300);
       else if (player.body.velocity.x == 0 || !player.body.onFloor() || animCheck) {step.pause()}
       if ((player.body.velocity.y != 0 || animCheck || player.body.velocity.x == 0) && soundInterval != false) clearInterval(soundInterval), soundInterval = false;
 

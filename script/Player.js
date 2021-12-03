@@ -18,7 +18,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
 
   init() {
-    console.log("player init")
     this.gravity = 700;
     this.jumpCount = 0;
     this.nextJumps = 1;
@@ -153,7 +152,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityY(-600);
         this.jumpCount++
         if (!animCheck) this.anims.play('jump', true);
-        console.log(this.jumpCount)
       }
 
       //FALLING FAST
@@ -227,8 +225,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
       }
       //   //CHECK ORDER OF LOADING FUNCTIONS
-      if (thingCheck == 0) console.log("player update");
-      thingCheck = 1;
 
 
 
